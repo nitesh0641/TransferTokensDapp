@@ -13,5 +13,8 @@ module.exports = {
 	},
 	tApproveAcc: function(token, mainAddr, spender, units, gasLimit, gasPrice) {
 		return token.approve.sendTransaction(spender,units,{from:mainAddr,gas:gasLimit,gasPrice:gasPrice});
+	},
+	tReceipt: function(web3, transHash) {
+		return web3.eth.getTransactionReceipt(transHash);
 	}
 };

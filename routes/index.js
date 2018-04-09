@@ -71,4 +71,12 @@ router.post('/approveContract', function(req, res, next){
 	res.json({message: web3Message});
 });
 
+router.post('/transactionReceipt', function(req, res, next){
+
+	var transHash = req.body.transHash;
+
+	web3Message = admin.tReceipt(web3, transHash);
+	res.json({receipt: web3Message});
+});
+
 module.exports = router;
