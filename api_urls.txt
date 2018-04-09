@@ -1,4 +1,4 @@
-eth balance : http://136.243.38.66:8000/api/admin/getETHBalance
+eth balance : http://192.168.1.67/api/admin/getETHBalance
 	post:
 	{
 		"address":"0xb9a12f2b065491d7a3b8682c6bd4228b78c66fca"
@@ -8,7 +8,7 @@ eth balance : http://136.243.38.66:8000/api/admin/getETHBalance
 		"balance":"2.048139256000000001"
 	}
 
-new account: http://136.243.38.66:8000/api/admin/newAccount
+new account: http://192.168.1.67/api/admin/newAccount
 	post:
 	{
 		"newPass":"password"
@@ -18,7 +18,7 @@ new account: http://136.243.38.66:8000/api/admin/newAccount
 		"wallet_id":"wallet address hash"
 	}
 
-send eth: http://136.243.38.66:8000/api/admin/sendFund
+send eth: http://192.168.1.67/api/admin/sendFund
 	post:
 	{
 		"from":"from address",
@@ -31,7 +31,7 @@ send eth: http://136.243.38.66:8000/api/admin/sendFund
 		"transactionHash":"transactionHash"
 	}
 
-approve contract: http://136.243.38.66:8000/api/admin/approveContract
+approve contract: http://192.168.1.67/api/admin/approveContract
 	post:
 	{
 		"accId":"0x3032aa954f02d5bd597bd55084ee1bfbf4c53c85",
@@ -39,7 +39,7 @@ approve contract: http://136.243.38.66:8000/api/admin/approveContract
 		"unit":10000000000
 	}
 
-send token: http://136.243.38.66:8000/api/token/coinTransaction
+send token: http://192.168.1.67/api/token/coinTransaction
 	post:
 	{
 		"from":"escrow acc",
@@ -52,7 +52,7 @@ send token: http://136.243.38.66:8000/api/token/coinTransaction
 		"transactionHash":"transactionHash"
 	}
 
-send token to escrow: http://136.243.38.66:8000/api/token/coinToEscrow
+send token to escrow: http://192.168.1.67/api/token/coinToEscrow
 	post:
 	{
 		"from":"from",
