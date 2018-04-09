@@ -1,0 +1,66 @@
+eth balance : http://136.243.38.66:8000/api/admin/getETHBalance
+	post:
+	{
+		"address":"0xb9a12f2b065491d7a3b8682c6bd4228b78c66fca"
+	}
+	return:
+	{
+		"balance":"2.048139256000000001"
+	}
+
+new account: http://136.243.38.66:8000/api/admin/newAccount
+	post:
+	{
+		"newPass":"password"
+	}
+	return:
+	{
+		"wallet_id":"wallet address hash"
+	}
+
+send eth: http://136.243.38.66:8000/api/admin/sendFund
+	post:
+	{
+		"from":"from address",
+		"pass":"password",
+		"to":"to address",
+		"unit":"eth amount"
+	}
+	return:
+	{
+		"transactionHash":"transactionHash"
+	}
+
+approve contract: http://136.243.38.66:8000/api/admin/approveContract
+	post:
+	{
+		"accId":"0x3032aa954f02d5bd597bd55084ee1bfbf4c53c85",
+		"accPass":"Default@123",
+		"unit":10000000000
+	}
+
+send token: http://136.243.38.66:8000/api/token/coinTransaction
+	post:
+	{
+		"from":"escrow acc",
+		"pass":"escrow pass",
+		"to":"to",
+		"unit":"units"
+	}
+	return:
+	{
+		"transactionHash":"transactionHash"
+	}
+
+send token to escrow: http://136.243.38.66:8000/api/token/coinToEscrow
+	post:
+	{
+		"from":"from",
+		"to":"escrow acc",
+		"senderPass":"sender pass",
+		"unit":"units"
+	}
+	return:
+	{
+		"transactionHash":"transactionHash"
+	}
