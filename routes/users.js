@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Web3 = require('web3');
+var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
 
 //-- ERC20 token contract generic abi
@@ -24,6 +25,25 @@ router.post('/getTokenBalance', function(req, res, next){
 	web3Message = tokens.tBalance(dlptToken, balanceOf);
 
 	res.json({balance:web3Message});
+});
+
+router.post('/approveAndTransfer', function(req, res, next){
+	var dlptToken = web3.eth.contract(contractABI).at(contractAddress);
+	
+	var accOwner = req.body.accId,
+		accPass = req.body.accPass,
+		coinUnit = req.body.unit,
+		escrowAcc = req.body.to,
+		gasLimit = 4700000; //-- minimum gasLimit = 21000
+		gasPrice = 41000000000; //-- 41 Gwei	
+
+	web3.personal.unlockAccount(accOwner, accPass, 15000);
+	var batch = web3.createBatch();
+	batch.add(admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice));
+	batch.add(tokens.cTransfer(trxcoin, accOwner, accOwner, escrowAcc, coinUnit, gasLimit, gasPrice));
+	web3Message = batch.execute();
+
+	res.json({transactionHash: web3Message});
 });
 
 router.post('/coinToEscrow', function(req, res, next){
