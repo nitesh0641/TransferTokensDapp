@@ -27,50 +27,6 @@ router.post('/getTokenBalance', function(req, res, next){
 	res.json({balance:web3Message});
 });
 
-router.post('/approveAndTransfer', function(req, res, next){
-	var dlptToken = web3.eth.contract(contractABI).at(contractAddress);
-	var trxcoin = web3.eth.contract(transferContractABI).at(transferContractAddress);
-	
-	var accOwner = req.body.accId,
-		accPass = req.body.accPass,
-		coinUnit = req.body.unit,
-		escrowAcc = req.body.to,
-		gasLimit = 4700000; //-- minimum gasLimit = 21000
-		gasPrice = 41000000000; //-- 41 Gwei	
-
-	web3.personal.unlockAccount(accOwner, accPass, 15000);
-	web3Message = admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice, function(e){
-		// web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
-		if(!e){
-			web3Message = "my my !!!";
-		}
-	});
-	// var batch = web3.createBatch();
-	// batch.add(admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice));
-	// batch.add(tokens.cTransfer(trxcoin, accOwner, accOwner, escrowAcc, coinUnit, gasLimit, gasPrice));
-	// web3Message = batch.execute();
-
-	res.json({transactionHash: web3Message});
-});
-
-router.post('/coinToEscrow', function(req, res, next){
-	//--dealing with my contract--//
-	var trxcoin = web3.eth.contract(transferContractABI).at(transferContractAddress);
-
-	var fromAddr = req.body.from,
-		escrowAcc = req.body.to,
-		mainAddr = fromAddr,
-		mainPass = req.body.senderPass,
-		coinUnit = req.body.unit;
-		gasLimit = 4700000; //-- minimum gasLimit = 21000
-		gasPrice = 41000000000; //-- 41 Gwei		
-
-	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
-	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, escrowAcc, coinUnit, gasLimit, gasPrice);
-	
-	res.json({"transactionHash": web3Message});
-});
-
 router.post('/coinTransaction', function(req, res, next){
 	//--dealing with my contract--//
 	var trxcoin = web3.eth.contract(transferContractABI).at(transferContractAddress);
