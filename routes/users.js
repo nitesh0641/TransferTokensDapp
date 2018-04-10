@@ -90,8 +90,8 @@ router.post('/tokenTransferEstimate', function(req, res, next) {
 		mainAddr = fromAddr,
 		mainPass = req.body.pass,
 		coinUnit = req.body.unit;
-		gasLimit = 4700000; //-- minimum gasLimit = 21000
-		gasPrice = 41000000000; //-- 41 Gwei
+		gasLimit = 21000; //-- minimum gasLimit = 21000
+		gasPrice = 1000000000; //-- 41 Gwei
 
 	web3Message = tokens.tokenTransferEstimate(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
 	res.json({"transactionHash": web3Message});
