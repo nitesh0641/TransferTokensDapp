@@ -38,6 +38,10 @@ approve contract: http://192.168.1.67/api/admin/approveContract
 		"accPass":"Default@123",
 		"unit":10000000000
 	}
+	return:
+	{
+	    "transactionHash": "0x5770c73a786b1a8e686f3d75268528b640dc4d3604e5a5973da8bcdb89c8bebf"
+	}
 
 send token: http://192.168.1.67/api/token/coinTransaction
 	post:
@@ -63,4 +67,37 @@ send token to escrow: http://192.168.1.67/api/token/coinToEscrow
 	return:
 	{
 		"transactionHash":"transactionHash"
+	}
+
+token balance : http://192.168.1.67/api/token/getTokenBalance
+	post:
+	{
+		"address":"0xb9a12f2b065491d7a3b8682c6bd4228b78c66fca"
+	}
+	return:
+	{
+		"balance":"2.048139256000000001"
+	}
+
+transaction Receipt: http://192.168.1.67/api/admin/transactionReceipt
+	post:
+	{
+		"transHash":"0xe6aeff99d43b216df4abaade36f55304ab93e8c61af90781924f7359e265339a"
+	}
+	return:
+	{
+	    "receipt": {
+	        "blockHash": "0xa8cc0ff734e92aff1433351651618a9f6105a2bdaa3c02049f6dbd043a876e04",
+	        "blockNumber": 2999681,
+	        "contractAddress": null,
+	        "cumulativeGasUsed": 21000,
+	        "from": "0xf6662a016dad5013afb0c8b12b0d6c4121942c30",
+	        "gasUsed": 21000,
+	        "logs": [],
+	        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+	        "status": "0x1",
+	        "to": "0xea30cd188b3f49feaf4a4e8eaca5a4072be27003",
+	        "transactionHash": "0xe6aeff99d43b216df4abaade36f55304ab93e8c61af90781924f7359e265339a",
+	        "transactionIndex": 0
+	    }
 	}

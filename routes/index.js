@@ -68,7 +68,7 @@ router.post('/approveContract', function(req, res, next){
 	web3.personal.unlockAccount(accOwner, accPass, 15000);
 	web3Message = admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice);
 
-	res.json({message: web3Message});
+	res.json({transactionHash: web3Message});
 });
 
 router.post('/transactionReceipt', function(req, res, next){
