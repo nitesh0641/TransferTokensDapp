@@ -72,7 +72,6 @@ router.post('/approveContract', function(req, res, next){
 });
 
 router.post('/transactionReceipt', function(req, res, next){
-
 	var transHash = req.body.transHash;
 
 	web3Message = admin.tReceipt(web3, transHash);

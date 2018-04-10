@@ -82,7 +82,20 @@ router.post('/retryCoinTransaction', function(req, res, next){
 	res.json({"transactionHash": web3Message});
 });
 
+router.post('/tokenTransferEstimate', function(req, res, next) {
+	var trxcoin = web3.eth.contract(transferContractABI).at(transferContractAddress);
 
+	var fromAddr = req.body.from,
+		toAddr = req.body.to,
+		mainAddr = fromAddr,
+		mainPass = req.body.pass,
+		coinUnit = req.body.unit;
+		gasLimit = 4700000; //-- minimum gasLimit = 21000
+		gasPrice = 41000000000; //-- 41 Gwei
+
+	web3Message = tokens.tokenTransferEstimate(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
+	res.json({"transactionHash": web3Message});
+});
 
 // /* GET users listing. */
 // router.get('/', function(req, res, next) {
