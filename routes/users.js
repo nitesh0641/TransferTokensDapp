@@ -39,10 +39,13 @@ router.post('/approveAndTransfer', function(req, res, next){
 		gasPrice = 41000000000; //-- 41 Gwei	
 
 	web3.personal.unlockAccount(accOwner, accPass, 15000);
-	var batch = web3.createBatch();
-	batch.add(admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice));
-	batch.add(tokens.cTransfer(trxcoin, accOwner, accOwner, escrowAcc, coinUnit, gasLimit, gasPrice));
-	web3Message = batch.execute();
+	web3Message = admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice, function(){
+		cosole.log(web3Message);
+	});
+	// var batch = web3.createBatch();
+	// batch.add(admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice));
+	// batch.add(tokens.cTransfer(trxcoin, accOwner, accOwner, escrowAcc, coinUnit, gasLimit, gasPrice));
+	// web3Message = batch.execute();
 
 	res.json({transactionHash: web3Message});
 });
