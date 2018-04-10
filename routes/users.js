@@ -93,7 +93,7 @@ router.post('/tokenTransferEstimate', function(req, res, next) {
 		gasLimit = 21000; //-- minimum gasLimit = 21000
 		gasPrice = 1000000000; //-- 41 Gwei
 
-	web3Message = tokens.tokenTransferEstimate(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
+	web3Message = tokens.tokenTransferEstimate(web3, trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
 	res.json({"transactionHash": web3Message});
 });
 
