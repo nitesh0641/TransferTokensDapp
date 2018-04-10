@@ -29,6 +29,7 @@ router.post('/getTokenBalance', function(req, res, next){
 
 router.post('/approveAndTransfer', function(req, res, next){
 	var dlptToken = web3.eth.contract(contractABI).at(contractAddress);
+	var trxcoin = web3.eth.contract(transferContractABI).at(transferContractAddress);
 	
 	var accOwner = req.body.accId,
 		accPass = req.body.accPass,
