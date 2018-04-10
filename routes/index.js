@@ -59,7 +59,7 @@ router.post('/getTokenBalance', function(req, res, next){
 router.post('/approveContract', function(req, res, next){
 	var dlptToken = web3.eth.contract(contractABI).at(contractAddress);
 	
-	accOwner = req.body.accId;
+	accOwner = req.body.wallet_id;
 	accPass = req.body.accPass;
 	coinUnit = req.body.unit;
 	gasLimit = 4700000;

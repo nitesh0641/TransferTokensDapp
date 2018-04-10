@@ -34,7 +34,7 @@ send eth: http://192.168.1.67/api/admin/sendFund
 approve contract: http://192.168.1.67/api/admin/approveContract
 	post:
 	{
-		"accId":"0x3032aa954f02d5bd597bd55084ee1bfbf4c53c85",
+		"wallet_id":"0x3032aa954f02d5bd597bd55084ee1bfbf4c53c85",
 		"accPass":"Default@123",
 		"unit":10000000000
 	}
