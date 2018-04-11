@@ -98,10 +98,17 @@ router.post('/tokenTransferEstimate', function(req, res, next) {
 });
 
 router.post("/tokenCommision", function(req, res, next) {
-	var commisionPercent = 0.000000000005
+	var commisionPercent = 0.000000000005,
+		dlptvalue = 1000000000000000000;
 	var amount = req.body.unit;
 
-	web3Message = Math.round((amount*commisionPercent)/100);
+	if(amount <= dlptvalue)
+	{
+		web3Message = Math.round((dlptvalue*commisionPercent)/100);
+	}
+	else{
+		web3Message = Math.round((amount*commisionPercent)/100);
+	}
 
 	res.json({"commision": web3Message});
 });

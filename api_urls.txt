@@ -79,6 +79,16 @@ token balance : http://192.168.1.67/api/token/getTokenBalance
 		"balance":"2.048139256000000001"
 	}
 
+token commision: http://136.243.38.67/api/token/tokenCommision
+	post:
+	{
+		"unit":1000000000000000000 //-- means 1 DLPT
+	}
+	return:
+	{
+	    "commision": 50000 //-- means 0.0000000000050000 DLPT
+	}
+
 transaction Receipt: http://192.168.1.67/api/admin/transactionReceipt
 	post:
 	{
