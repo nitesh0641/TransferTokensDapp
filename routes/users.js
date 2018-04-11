@@ -24,7 +24,7 @@ router.post('/getTokenBalance', function(req, res, next){
 	var balanceOf = req.body.address;
 	web3Message = tokens.tBalance(dlptToken, balanceOf);
 	// web3Message = parseFloat(web3Message, 18)
-	web3Message = parseFloat(web3Message/1000000000000000000, 18);
+	web3Message = parseFloat(web3Message/1000000000000000000, 19);
 
 	res.json({balance:web3Message});
 });
