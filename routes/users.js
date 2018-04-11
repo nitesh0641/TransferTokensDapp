@@ -16,6 +16,7 @@ var transferContractAddress = '0x2d0a862cb09ab8d0585b82f505a399d91d074f93';
 web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.67:8545"));
 var addr = web3.eth.accounts[0];
 var web3Message = '';
+var Escrow = '0xb9a12f2b065491d7a3b8682c6bd4228b78c66fca';
 
 // -- token part -- //
 router.post('/getTokenBalance', function(req, res, next){
@@ -38,7 +39,8 @@ router.post('/coinToEscrow', function(req, res, next){
 		coinUnit = req.body.unit;
 		gasLimit = 4700000; //-- minimum gasLimit = 21000
 		gasPrice = 41000000000; //-- 41 Gwei		
-
+	
+	coinUnit = coinUnit*1000000000000000000;
 	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
 	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, escrowAcc, coinUnit, gasLimit, gasPrice);
 	
@@ -57,6 +59,21 @@ router.post('/coinTransaction', function(req, res, next){
 		gasLimit = 4700000; //-- minimum gasLimit = 21000
 		gasPrice = 41000000000; //-- 41 Gwei		
 	
+	coinUnit = coinUnit*1000000000000000000;
+	if(fromAddr == Escrow)
+	{
+		var commisionPercent = 0.000000000005,
+			dlptvalue = 1000000000000000000;
+
+		if(coinUnit <= dlptvalue)
+		{
+			commision = Math.round((dlptvalue*commisionPercent)/100);
+		}
+		else{
+			commision = Math.round((coinUnit*commisionPercent)/100);
+		}
+		coinUnit = coinUnit-commision;
+	}
 	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
 	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
 	
