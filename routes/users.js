@@ -101,7 +101,7 @@ router.post("/tokenCommision", function(req, res, next) {
 	var commisionPercent = 0.000000000005
 	var amount = req.body.unit;
 
-	web3Message = parseInt((amount*commisionPercent)/100);
+	web3Message = Math.round((amount*commisionPercent)/100);
 
 	res.json({"commision": web3Message});
 });
