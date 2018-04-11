@@ -3,7 +3,7 @@ module.exports = {
 		return token.name.call();
 	},
 	tBalance: function(token, addr) {
-		return parseFloat((token.balanceOf.call(addr)/1000000000000000000),18);
+		return parseFloat((token.balanceOf.call(addr)/1000000000000000000),20);
 		// return token.balanceOf.call(addr).toString(10);
 	},
 	cAddress: function(contract) {
