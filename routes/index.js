@@ -65,6 +65,8 @@ router.post('/approveContract', function(req, res, next){
 	gasLimit = 4700000;
 	gasPrice = 41000000000; //-- 41 Gwei
 
+	coinUnit = coinUnit*1000000000000000000;
+
 	web3.personal.unlockAccount(accOwner, accPass, 15000);
 	web3Message = admin.tApproveAcc(dlptToken, accOwner, transferContractAddress, coinUnit, gasLimit, gasPrice);
 

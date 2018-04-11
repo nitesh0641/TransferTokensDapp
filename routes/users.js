@@ -74,10 +74,10 @@ router.post('/coinTransaction', function(req, res, next){
 		}
 		coinUnit = coinUnit-commision;
 	}
-	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
-	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
+	// web3.personal.unlockAccount(mainAddr, mainPass, 1500);
+	// web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
 	
-	res.json({"transactionHash": web3Message});
+	res.json({"transactionHash": coinUnit});
 });
 
 router.post('/retryCoinTransaction', function(req, res, next){
