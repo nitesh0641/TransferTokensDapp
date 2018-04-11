@@ -18,7 +18,7 @@ module.exports = {
 	},
 	tokenTransferEstimate: function(web3, contract, mainAddr, fromAddress, toAddress, units, gasLimit, gasPrice) {
 		var data0 = contract.transfer.getData(fromAddress, toAddress, units,{from:mainAddr,gas:gasLimit,gasPrice:gasPrice});
-		return web3.eth.estimateGas({data: data0, from: fromAddress, to: toAddress, gas:gasLimit, gasPrice:gasPrice});
+		return web3.eth.estimateGas({data: data0, from: fromAddress, to: toAddress});
 		// return contract.transfer.estimateGas(fromAddress,toAddress,units,{from:mainAddr,gas:gasLimit,gasPrice:gasPrice});
 	}
 };
