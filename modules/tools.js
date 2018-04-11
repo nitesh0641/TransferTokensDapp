@@ -3,8 +3,8 @@ module.exports = {
 		return token.name.call();
 	},
 	tBalance: function(token, addr) {
-		// return (token.balanceOf.call(addr)/1000000000000000000).toString(10);
-		return token.balanceOf.call(addr).toString(10);
+		return (token.balanceOf.call(addr)/100000000000000000).toString(10);
+		// return token.balanceOf.call(addr).toString(10);
 	},
 	cAddress: function(contract) {
 		return contract.getContractAddr.call();
