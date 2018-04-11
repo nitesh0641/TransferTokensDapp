@@ -72,7 +72,7 @@ router.post('/coinTransaction', function(req, res, next){
 		else{
 			commision = Math.round((coinUnit*commisionPercent)/100);
 		}
-		coinUnit = coinUnit-commision;
+		coinUnit1 = coinUnit-commision;
 	}
 	// web3.personal.unlockAccount(mainAddr, mainPass, 1500);
 	// web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
