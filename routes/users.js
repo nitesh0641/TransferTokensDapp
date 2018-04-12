@@ -59,7 +59,7 @@ router.post('/coinTransaction', function(req, res, next){
 		gasLimit = 4700000; //-- minimum gasLimit = 21000
 		gasPrice = 41000000000; //-- 41 Gwei		
 	
-	// coinUnit = coinUnit*1000000000000000000;
+	coinUnit = coinUnit*1000000000000000000;
 	// if(fromAddr == Escrow)
 	// {
 	// 	var commisionPercent = 0.000000000005,
