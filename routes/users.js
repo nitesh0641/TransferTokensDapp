@@ -59,25 +59,25 @@ router.post('/coinTransaction', function(req, res, next){
 		gasLimit = 4700000; //-- minimum gasLimit = 21000
 		gasPrice = 41000000000; //-- 41 Gwei		
 	
-	coinUnit = coinUnit*1000000000000000000;
-	if(fromAddr == Escrow)
-	{
-		var commisionPercent = 0.000000000005,
-			dlptvalue = 1000000000000000000;
+	// coinUnit = coinUnit*1000000000000000000;
+	// if(fromAddr == Escrow)
+	// {
+	// 	var commisionPercent = 0.000000000005,
+	// 		dlptvalue = 1000000000000000000;
 
-		if(coinUnit <= dlptvalue)
-		{
-			commision = Math.round((dlptvalue*commisionPercent)/100);
-		}
-		else{
-			commision = Math.round((coinUnit*commisionPercent)/100);
-		}
-		coinUnit = coinUnit-commision;
-	}
-	// web3.personal.unlockAccount(mainAddr, mainPass, 1500);
-	// web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
+	// 	if(coinUnit <= dlptvalue)
+	// 	{
+	// 		commision = Math.round((dlptvalue*commisionPercent)/100);
+	// 	}
+	// 	else{
+	// 		commision = Math.round((coinUnit*commisionPercent)/100);
+	// 	}
+	// 	coinUnit = coinUnit-commision;
+	// }
+	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
+	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
 	
-	res.json({"transactionHash": coinUnit});
+	res.json({"transactionHash": web3Message});
 });
 
 router.post('/retryCoinTransaction', function(req, res, next){
