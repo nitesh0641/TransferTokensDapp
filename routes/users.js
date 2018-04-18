@@ -24,6 +24,7 @@ router.post('/getTokenBalance', function(req, res, next){
 
 	var balanceOf = req.body.address;
 	web3Message = tokens.tBalance(dlptToken, balanceOf);
+	web3Message = web3Message/1000000000000000000;
 
 	res.json({balance:web3Message});
 });
@@ -60,6 +61,7 @@ router.post('/coinTransaction', function(req, res, next){
 		gasPrice = 41000000000; //-- 41 Gwei		
 	
 	coinUnit = coinUnit*1000000000000000000;
+	
 	// if(fromAddr == Escrow)
 	// {
 	// 	var commisionPercent = 0.000000000005,
@@ -74,6 +76,7 @@ router.post('/coinTransaction', function(req, res, next){
 	// 	}
 	// 	coinUnit = coinUnit-commision;
 	// }
+	
 	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
 	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, gasLimit, gasPrice);
 	
