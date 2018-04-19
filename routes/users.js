@@ -93,7 +93,7 @@ router.post('/retryCoinTransaction', function(req, res, next){
 		mainPass = req.body.pass,
 		coinUnit = req.body.unit;
 		nonce = req.body.nonce,
-		gasLimit = 7400000; //-- minimum gasLimit = 21000
+		gasLimit = 4700000; //-- minimum gasLimit = 21000
 		gasPrice = 100000000000; //-- 100 Gwei		
 	
 	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
