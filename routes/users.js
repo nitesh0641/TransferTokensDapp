@@ -94,7 +94,7 @@ router.post('/retryCoinTransaction', function(req, res, next){
 		coinUnit = req.body.unit;
 		nonce = req.body.nonce,
 		gasLimit = 4700000; //-- minimum gasLimit = 21000
-		gasPrice = 100000000000; //-- 100 Gwei		
+		gasPrice = 1000000000000; //-- 100 Gwei		
 	
 	web3.personal.unlockAccount(mainAddr, mainPass, 1500);
 	web3Message = tokens.cTransfer(trxcoin, mainAddr, fromAddr, toAddr, coinUnit, nonce, gasLimit, gasPrice);
