@@ -139,7 +139,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var kind = "file";		// could also be "directory" or "data"
 	var defaultFile = "";	// (defaultFile: "/index.html") optional, and only for kind === "directory"
-	web3Message = ethSwarm.uploadFile(swarm, filepath, kind, defaultFile);
+	web3Message = ethSwarm.uploadFile(swarm, filepath, kind, defaultFile, web3Message);
 
 	res.json({"hash": web3Message});
 });
