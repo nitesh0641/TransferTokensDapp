@@ -144,7 +144,7 @@ router.post("/uploadFile", function(req, res, next) {
 	  .then(hash => {var outputHash = hash;})
 	  .catch(console.log);
 
-	res.json({"hash": outHash});
+	res.json({"hash": outputHash});
 });
 
 router.post("/uploadJSONData", function(req, res, next) {
