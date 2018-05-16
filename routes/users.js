@@ -142,10 +142,10 @@ router.post("/uploadFile", function(req, res, next) {
 	  path: filepath,		// path to data / file / directory
 	  kind: "file",			// could also be "file" or "data" or "directory"
 	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
-	  .then(outputHash)
+	  .then(hash)
 	  .catch(console.log);
 
-	res.json({"hash": outputHash});
+	res.json({"hash": hash});
 });
 
 router.post("/uploadJSONData", function(req, res, next) {
