@@ -136,15 +136,15 @@ router.post("/tokenCommision", function(req, res, next) {
 
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
-
+	var outputHash = '';
 	swarm.upload({
 	  path: filepath,		// path to data / file / directory
 	  kind: "file",			// could also be "file" or "data" or "directory"
 	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
-	  .then(hash => {web3Message = hash})
+	  .then(outHash => {outputHash = outHash})
 	  .catch(console.log);
 
-	res.json({"hash": web3Message});
+	res.json({"hash": outputHash});
 });
 
 router.post("/uploadJSONData", function(req, res, next) {
