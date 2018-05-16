@@ -134,10 +134,20 @@ router.post("/tokenCommision", function(req, res, next) {
 	res.json({"commision": web3Message});
 });
 
-router.post("/uploadData", function(req, res, next) {
+router.post("/uploadJSONData", function(req, res, next) {
 
 	swarm.upload(req.body.data).then(hash => {
 	  web3Message = hash;
+	});
+
+	res.json({"hash": web3Message});
+});
+
+router.post("/downloadJSONData", function(req, res, next) {
+
+	const fileHash = req.body.hash;
+	swarm.download(fileHash).then(array => {
+	  web3Message = swarm.toString(array);
 	});
 
 	res.json({"hash": web3Message});
