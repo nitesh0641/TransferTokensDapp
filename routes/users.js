@@ -134,6 +134,19 @@ router.post("/tokenCommision", function(req, res, next) {
 	res.json({"commision": web3Message});
 });
 
+router.post("/uploadFile", function(req, res, next) {
+	var filepath = req.body.filepath;
+
+	swarm.upload({
+	  path: filepath,		// path to data / file / directory
+	  kind: "file",			// could also be "file" or "data" or "directory"
+	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
+	  .then(console.log)
+	  .catch(console.log);
+
+	res.json({"hash": web3Message});
+});
+
 router.post("/uploadJSONData", function(req, res, next) {
 
 	swarm.upload(req.body.data).then(hash => {
@@ -150,7 +163,7 @@ router.post("/downloadJSONData", function(req, res, next) {
 	  web3Message = swarm.toString(array);
 	});
 
-	res.json({"hash": web3Message});
+	res.json({"data": web3Message});
 });
 
 // /* GET users listing. */
