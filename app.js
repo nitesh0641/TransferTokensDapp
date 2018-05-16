@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var swarmRouter = require('./routes/eth-swarm');
 
 var app = express();
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/admin', indexRouter);
 app.use('/api/token', usersRouter);
+app.use('/api/handler', swarmRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
