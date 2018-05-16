@@ -137,7 +137,7 @@ router.post("/tokenCommision", function(req, res, next) {
 router.post("/uploadData", function(req, res, next) {
 	const data = req.body.data;
 
-	swarm.upload(file).then(hash => {
+	swarm.upload(data).then(hash => {
 	  web3Message = hash;
 	});
 
