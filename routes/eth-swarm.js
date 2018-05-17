@@ -23,6 +23,19 @@ router.post("/uploadFile", function(req, res, next) {
 	// res.json({"hash": web3Message});
 });
 
+router.post("/downloadFile", function(req, res, next){
+	var filehash = req.body.filehash;
+	targetDir = "/var/www/TransferTokensDapp/downloads"
+
+	swarm.download(filehash, targetDir)
+	.then(function(path){
+		web3Message = path;
+	  	res.json({"hash": path});
+		console.log(`Downloaded DApp to ${path}.`)
+	})
+	.catch(console.log);
+});
+
 router.post("/uploadJSONData", function(req, res, next) {
 
 	swarm.upload(req.body.data).then(hash => {
