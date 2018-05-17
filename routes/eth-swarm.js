@@ -14,7 +14,7 @@ var web3Message = '';
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var pubkey = '/var/crypto/server.crt';
-	console.log(pubkey);
+	
 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, filepath, pubkey);
 
 	swarm.upload(encryptedFile)
@@ -51,9 +51,12 @@ router.post("/downloadFile", function(req, res, next){
 router.post("/downloadData", function(req, res, next) {
 
 	const fileHash = req.body.hash;
+	var prikey = '/var/crypto/key.pem';
+
 	swarm.download(fileHash)
 	.then(function(array){
-	  	res.json({"hash": swarm.toString(array)});
+		decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
+	  	res.json({"hash": swarm.toString(decryptedFile)});
 	  })
 	.catch(console.log);
 
