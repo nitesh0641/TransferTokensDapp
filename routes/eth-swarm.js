@@ -14,10 +14,18 @@ var web3Message = '';
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var pubkey = '/var/crypto/server.crt';
-	
-	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, filepath, pubkey);
 
-	swarm.upload(encryptedFile)
+	fs.readFile(filepath, 'utf8', function(err, contents) {
+		encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
+	    var stream = fs.createWriteStream('/var/www/TransferTokensDapp/uploads/encrypted.png');
+		stream.once('open', function(fd) {
+		  stream.write(encryptedFile);
+		  stream.end();
+		});
+	    // fs.writefile(,buffer,'utf8');
+	});
+	
+	swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
 	  .then(function(hash){
 	  	web3Message = hash;
 	  	res.json({"hash": web3Message});
