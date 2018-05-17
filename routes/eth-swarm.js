@@ -55,8 +55,9 @@ router.post("/downloadData", function(req, res, next) {
 
 	swarm.download(fileHash)
 	.then(function(array){
+		array = swarm.toString(array);
 		decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
-	  	res.json({"hash": swarm.toString(decryptedFile)});
+	  	res.json({"hash": decryptedFile});
 	  })
 	.catch(console.log);
 
