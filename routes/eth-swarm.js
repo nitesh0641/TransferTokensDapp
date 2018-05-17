@@ -47,11 +47,13 @@ router.post("/uploadJSONData", function(req, res, next) {
 router.post("/downloadJSONData", function(req, res, next) {
 
 	const fileHash = req.body.hash;
-	swarm.download(fileHash).then(array => {
-	  web3Message = swarm.toString(array);
-	});
+	swarm.download(fileHash)
+	.then(function(array){
+	  	res.json({"hash": swarm.toString(array)});
+	  })
+	.catch(console.log);
 
-	res.json({"data": web3Message});
+	// res.json({"data": web3Message});
 });
 
 
