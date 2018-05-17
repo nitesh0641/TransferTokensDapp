@@ -17,15 +17,21 @@ router.post("/uploadFile", function(req, res, next) {
 	console.log(pubkey);
 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, filepath, pubkey);
 
-	swarm.upload({
-	  path: encryptedFile,		// path to data / file / directory
-	  kind: "file",			// could also be "file" or "data" or "directory"
-	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
+	swarm.upload(encryptedFile)
 	  .then(function(hash){
 	  	web3Message = hash;
 	  	res.json({"hash": web3Message});
 	  })
 	  .catch(console.log);
+	// swarm.upload({
+	//   path: encryptedFile,		// path to data / file / directory
+	//   kind: "file",			// could also be "file" or "data" or "directory"
+	//   defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
+	//   .then(function(hash){
+	//   	web3Message = hash;
+	//   	res.json({"hash": web3Message});
+	//   })
+	//   .catch(console.log);
 
 	// res.json({"hash": web3Message});
 });
@@ -42,16 +48,7 @@ router.post("/downloadFile", function(req, res, next){
 	.catch(console.log);
 });
 
-router.post("/uploadJSONData", function(req, res, next) {
-
-	swarm.upload(req.body.data).then(hash => {
-	  web3Message = hash;
-	});
-
-	res.json({"hash": web3Message});
-});
-
-router.post("/downloadJSONData", function(req, res, next) {
+router.post("/downloadData", function(req, res, next) {
 
 	const fileHash = req.body.hash;
 	swarm.download(fileHash)

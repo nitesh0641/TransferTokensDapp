@@ -4,7 +4,6 @@ module.exports = {
         var publicKey = fs.readFileSync(absolutePath, "utf8");
         var buffer = new Buffer(toEncrypt);
         var encrypted = crypto.publicEncrypt(publicKey, buffer);
-        console.log("encrypted =>"+encrypted);
         return encrypted.toString("base64");
     },
     decryptStringWithRsaPrivateKey: function(crypto, path, fs, toDecrypt, relativeOrAbsolutePathtoPrivateKey) {
