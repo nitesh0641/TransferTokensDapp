@@ -14,10 +14,12 @@ router.post("/uploadFile", function(req, res, next) {
 	  path: filepath,		// path to data / file / directory
 	  kind: "file",			// could also be "file" or "data" or "directory"
 	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
-	  .then(hash => {web3Message = hash})
+	  .then(function(hash){
+	  	web3Message = hash;
+	  	console.log(web3Message);
+	  })
 	  .catch(console.log);
 
-	  console.log(web3Message);
 	res.json({"hash": web3Message});
 });
 
