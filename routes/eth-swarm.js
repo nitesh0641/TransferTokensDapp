@@ -29,8 +29,7 @@ router.post("/downloadFile", function(req, res, next){
 
 	swarm.download(filehash, targetDir)
 	.then(function(path){
-		web3Message = path;
-	  	res.json({"hash": path});
+	  	res.json({"filepath": path});
 		console.log(`Downloaded DApp to ${path}.`)
 	})
 	.catch(console.log);
