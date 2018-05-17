@@ -16,7 +16,6 @@ router.post("/uploadFile", function(req, res, next) {
 	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
 	  .then(function(hash){
 	  	web3Message = hash;
-	  	console.log(web3Message);
 	  	res.json({"hash": web3Message});
 	  })
 	  .catch(console.log);
