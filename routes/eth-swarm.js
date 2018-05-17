@@ -13,7 +13,7 @@ var web3Message = '';
 
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
-	var pubkey = '/var/crypto/demoCert.csr';
+	var pubkey = '/var/crypto/server.crt';
 	console.log(pubkey);
 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, filepath, pubkey);
 
