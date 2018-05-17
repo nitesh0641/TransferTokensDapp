@@ -17,10 +17,11 @@ router.post("/uploadFile", function(req, res, next) {
 	  .then(function(hash){
 	  	web3Message = hash;
 	  	console.log(web3Message);
+	  	res.json({"hash": web3Message});
 	  })
 	  .catch(console.log);
 
-	res.json({"hash": web3Message});
+	// res.json({"hash": web3Message});
 });
 
 router.post("/uploadJSONData", function(req, res, next) {
