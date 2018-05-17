@@ -24,7 +24,10 @@ then
 fi
  
 echo "Generating key request for $domain"
- 
+
+#-- change dir
+cd /var/crypto
+
 #Generate a key
 openssl genrsa -des3 -passout pass:$password -out $domain.key 2048 -noout
  
