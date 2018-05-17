@@ -9,7 +9,8 @@ var web3Message = '';
 
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
-
+	const web3Message = '';
+	
 	swarm.upload({
 	  path: filepath,		// path to data / file / directory
 	  kind: "file",			// could also be "file" or "data" or "directory"
