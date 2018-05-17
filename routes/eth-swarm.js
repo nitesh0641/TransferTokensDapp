@@ -31,6 +31,7 @@ router.post("/uploadFile", function(req, res, next) {
 	  	res.json({"hash": web3Message});
 	  })
 	  .catch(console.log);
+	
 	// swarm.upload({
 	//   path: encryptedFile,		// path to data / file / directory
 	//   kind: "file",			// could also be "file" or "data" or "directory"
@@ -42,6 +43,22 @@ router.post("/uploadFile", function(req, res, next) {
 	//   .catch(console.log);
 
 	// res.json({"hash": web3Message});
+});
+
+router.post("/downloadData", function(req, res, next) {
+
+	const fileHash = req.body.hash;
+	var prikey = '/var/crypto/key.pem';
+
+	swarm.download(fileHash)
+	.then(function(array){
+		array = swarm.toString(array);
+		// decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
+	  	res.json({"hash": array});
+	  })
+	.catch(console.log);
+
+	// res.json({"data": web3Message});
 });
 
 router.post("/downloadFile", function(req, res, next){
@@ -56,21 +73,6 @@ router.post("/downloadFile", function(req, res, next){
 	.catch(console.log);
 });
 
-router.post("/downloadData", function(req, res, next) {
-
-	const fileHash = req.body.hash;
-	var prikey = '/var/crypto/key.pem';
-
-	swarm.download(fileHash)
-	.then(function(array){
-		array = swarm.toString(array);
-		decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
-	  	res.json({"hash": decryptedFile});
-	  })
-	.catch(console.log);
-
-	// res.json({"data": web3Message});
-});
 
 
 module.exports = router;
