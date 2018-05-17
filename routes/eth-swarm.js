@@ -9,13 +9,12 @@ var web3Message = '';
 
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
-	let web3Message = '';
 
 	swarm.upload({
 	  path: filepath,		// path to data / file / directory
 	  kind: "file",			// could also be "file" or "data" or "directory"
 	  defaultFile: ""}) 	// (defaultFile: "/index.html") optional, and only for kind === "directory"
-	  .then(hash => web3Message=hash)
+	  .then(hash => res.json({"hash": hash}))
 	  .catch(console.log);
 
 	res.json({"hash": web3Message});
