@@ -25,9 +25,9 @@ router.post("/uploadFile", function(req, res, next) {
 
 router.post("/downloadFile", function(req, res, next){
 	var filehash = req.body.filehash;
-	targetDir = "/var/www/TransferTokensDapp/downloads"
+	targetDir = "/var/www/TransferTokensDapp/downloads";
 
-	swarm.download(filehash, targetDir)
+	swarm.download("1b14503abd07770da8adb680a18507738390117499cce3114b5a4bc60f5fd9dd", "/var/www/TransferTokensDapp/downloads")
 	.then(function(path){
 	  	res.json({"filepath": path});
 		console.log(`Downloaded DApp to ${path}.`)
