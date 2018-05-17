@@ -14,7 +14,7 @@ var web3Message = '';
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	const pubkey = '/var/crypto/testKey.key.pub';
-	encryptedFile = encrypt.encryptStringWithRsaPublicKey(filepath, pubkey);
+	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, filepath, pubkey);
 
 	swarm.upload({
 	  path: encryptedFile,		// path to data / file / directory
