@@ -21,11 +21,8 @@ router.post("/uploadFile", function(req, res, next) {
 
 	console.log('Encrypt with User1 Public');
 
-	var read = fstream.Reader(filepath),
-		pack = tar.pack(),
-		writer = fstream.Writer('./out.tar');
-
-	read.pipe(pack).pipe(writer);
+	// packing a directory
+	tar.pack(filepath).pipe(fs.createWriteStream('./my-tarball.tar'))
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
 	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
