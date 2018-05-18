@@ -22,8 +22,9 @@ router.post("/uploadFile", function(req, res, next) {
 	console.log('Encrypt with User2 Public; Sign with User1 Private');
 
 	fs.readFile(filepath, 'utf8', function(err, contents) {
-		enc = pubkeyUser2.encrypt(contents, 'utf8', 'base64');
-		sig = privkeyUser1.hashAndSign('sha256', contents, 'utf8', 'base64');
+		var buffer = new Buffer(contents);
+		enc = pubkeyUser2.encrypt(buffer, 'utf8', 'base64');
+		sig = privkeyUser1.hashAndSign('sha256', buffer, 'utf8', 'base64');
 		console.log('encrypted', enc, '\n');
 		console.log('signed', sig, '\n');
 		// encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
