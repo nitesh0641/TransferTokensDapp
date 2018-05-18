@@ -16,8 +16,8 @@ router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	
 	// user1 has his private and user2's public key
-	var privkeyUser1 = ursa.createPrivateKey(fs.readFileSync('/var/crypto/user1.pem'));
-	var pubkeyUser2 = ursa.createPublicKey(fs.readFileSync('/var/crypto/user2.crt'));
+	var privkeyUser1 = ursa.createPrivateKey(fs.readFileSync('/var/crypto/user1/privkey.pem'));
+	var pubkeyUser2 = ursa.createPublicKey(fs.readFileSync('/var/crypto/user2/pubkey.pem'));
 
 	console.log('Encrypt with User2 Public; Sign with User1 Private');
 
