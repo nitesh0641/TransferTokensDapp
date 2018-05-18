@@ -22,7 +22,7 @@ router.post("/uploadFile", function(req, res, next) {
 	console.log('Encrypt with User1 Public');
 
 	// packing a directory
-	tar.pack(filepath).pipe(fs.createWriteStream('./my-tarball.tar'));
+	// tar.pack(filepath).pipe(fs.createWriteStream('./my-tarball.tar'));
 	// extracting a directory
 	fs.createReadStream('./my-tarball.tar').pipe(tar.extract('./image.png'));
 
