@@ -19,11 +19,11 @@ router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var pubkeyUser1 = '/var/crypto/user1/pubkey.pem';
 
-	console.log('Encrypt with User1 Public');
+	var read = fstream.Read(filepath),
+		ency = crypto.createCipher('aes-256-ctr', pubkeyUser1),
+		writer = fstream.Writer('./image.png.enc');
 
-	var read = fstream.Reader(filepath);
-	var writer = fstream.Writer('./image.png.enc');
-	encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, read, pubkeyUser1).pipe(writer);
+	read.pipe(ency).pipe(writer);
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
 	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
