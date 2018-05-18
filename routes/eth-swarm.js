@@ -27,7 +27,7 @@ router.post("/uploadFile", function(req, res, next) {
 	// read.pipe(ency).pipe(writer);
 
 	var read = fstream.Reader('./image.png.enc'),
-		dency = crypto.createDecipher('aes-256-ctr', prikeyUser1),
+		dency = crypto.createDecipher('aes-256-ctr', pubkeyUser1),
 		writer = fstream.Writer('./image.png');
 
 	read.pipe(dency).pipe(writer);
