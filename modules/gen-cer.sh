@@ -2,6 +2,7 @@
  
 #Required
 domain=$1
+domaincsr=$domain"csr"
 commonname=$domain
  
 #Change to your company details
@@ -36,19 +37,24 @@ echo "Removing passphrase from key"
 openssl rsa -in $domain.key -passin pass:$password -out $domain.key
  
 #Create the request
-echo "Creating CSR"
-openssl req -new -key $domain.key -out $domain.csr -passin pass:$password \
-    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
- 
+echo "Creating PEM"
+# openssl req -new -key $domain.key -out $domain.csr -passin pass:$password \
+    # -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+openssl req -newkey rsa:2048 -new -nodes -keyout $domain.pem -out $domaincsr.pem --passin pass:$password \
+	-subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+
+echo "Creating CRT"
+openssl x509 -req -days 3650 -in $domaincsr.pem -signkey $domain.pem -out $domain.crt
+
 echo "---------------------------"
-echo "-----Below is your CSR-----"
+echo "-----Below is your CRT-----"
 echo "---------------------------"
 echo
-cat $domain.csr
+cat $domain.crt
  
 echo
 echo "---------------------------"
 echo "-----Below is your Key-----"
 echo "---------------------------"
 echo
-cat $domain.key
+cat $domain.pem

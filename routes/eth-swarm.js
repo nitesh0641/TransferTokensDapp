@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var Web3 = require('web3');
-var crypto = require('crypto');
+// var crypto = require('crypto');
+var ursa = require('ursa');
 var path = require('path');
 var fs = require('fs');
 var admin = require('../modules/admin');
