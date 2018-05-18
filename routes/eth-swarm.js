@@ -22,7 +22,7 @@ router.post("/uploadFile", function(req, res, next) {
 	console.log('Encrypt with User1 Public');
 
 	var read = fstream.Reader(filepath),
-		pack = tar.Pack(),
+		pack = tar.pack(),
 		writer = fstream.Writer('./out.tar');
 
 	read.pipe(pack).pipe(writer);
