@@ -18,12 +18,19 @@ var web3Message = '';
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var pubkeyUser1 = '/var/crypto/user1/pubkey.pem';
+	var prikeyUser1 = '/var/crypto/user1/privkey.pem';
 
-	var read = fstream.Reader(filepath),
-		ency = crypto.createCipher('aes-256-ctr', pubkeyUser1),
-		writer = fstream.Writer('./image.png.enc');
+	// var read = fstream.Reader(filepath),
+	// 	ency = crypto.createCipher('aes-256-ctr', pubkeyUser1),
+	// 	writer = fstream.Writer('./image.png.enc');
 
-	read.pipe(ency).pipe(writer);
+	// read.pipe(ency).pipe(writer);
+
+	var read = fstream.Reader('./image.png.enc'),
+		dency = crypto.createDecipher('aes-256-ctr', prikeyUser1),
+		writer = fstream.Writer('./image.png');
+
+	read.pipe(dency).pipe(writer);
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
 	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
