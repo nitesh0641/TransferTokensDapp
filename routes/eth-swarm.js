@@ -26,7 +26,11 @@ router.post("/uploadFile", function(req, res, next) {
 	
 	// extracting a directory
 	// console.log("before cd => "+__dirname);
-	fs.readFile('my-tarball.tar').pipe(tar.extract('image.png'));
+	// fs.createReadStream('my-tarball.tar').pipe(tar.extract('image.png'));
+
+	fs.readFile('my-tarball.tar', 'utf-8', function(err, contents){
+		tar.extract('image.png');
+	});
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
 	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
