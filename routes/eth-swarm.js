@@ -22,11 +22,11 @@ router.post("/uploadFile", function(req, res, next) {
 	console.log('Encrypt with User1 Public');
 
 	// packing a directory
-	tar.pack(filepath).pipe(fs.createWriteStream('my-tarball.tar'));
+	// tar.pack(filepath).pipe(fs.createWriteStream('my-tarball.tar'));
+	
 	// extracting a directory
 	// console.log("before cd => "+__dirname);
-	// fstream.Reader('my-tarball.tar').pipe(tar.extract('image.png'));
-	// fs.createReadStream("my-tarball.tar").pipe(tar.extract('./image.png'));
+	fs.createReadStream('my-tarball.tar').pipe(tar.extract('image.png'));
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
 	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
