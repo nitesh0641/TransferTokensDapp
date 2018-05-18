@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var path = require('path');
 var fs = require('fs');
 var fstream = require('fstream');
-var tar = require('tar');
+var tar = require('tar-fs')
 // var ursa = require('ursa');
 
 var admin = require('../modules/admin');
