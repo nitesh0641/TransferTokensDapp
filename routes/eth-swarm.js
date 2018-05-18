@@ -14,16 +14,24 @@ var web3Message = '';
 
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
-	var pubkey = '/var/crypto/server.crt';
+	
+	// user1 has his private and user2's public key
+	var privkeyUser1 = ursa.createPrivateKey(fs.readFileSync('/var/crypto/user1.pem'));
+	var pubkeyUser2 = ursa.createPublicKey(fs.readFileSync('/var/crypto/user2.crt'));
+
+	console.log('Encrypt with User2 Public; Sign with User1 Private');
 
 	fs.readFile(filepath, 'utf8', function(err, contents) {
-		encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
+		enc = pubkeyUser2.encrypt(contents, 'utf8', 'base64');
+		sig = privkeyUser1.hashAndSign('sha256', contents, 'utf8', 'base64');
+		console.log('encrypted', enc, '\n');
+		console.log('signed', sig, '\n');
+		// encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
 	    var stream = fs.createWriteStream('/var/www/TransferTokensDapp/uploads/encrypted.png');
 		stream.once('open', function(fd) {
 		  stream.write(encryptedFile);
 		  stream.end();
 		});
-	    // fs.writefile(,buffer,'utf8');
 	});
 	
 	swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
