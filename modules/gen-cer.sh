@@ -30,11 +30,11 @@ echo "Generating key request for $domain"
 cd /var/crypto
 
 #Generate a key
-openssl genrsa -des3 -passout pass:$password -out $domain.key 2048 -noout
+# openssl genrsa -des3 -passout pass:$password -out $domain.key 2048 -noout
  
 #Remove passphrase from the key. Comment the line out to keep the passphrase
-echo "Removing passphrase from key"
-openssl rsa -in $domain.key -passin pass:$password -out $domain.key
+# echo "Removing passphrase from key"
+# openssl rsa -in $domain.key -passin pass:$password -out $domain.key
  
 #Create the request
 echo "Creating PEM"
