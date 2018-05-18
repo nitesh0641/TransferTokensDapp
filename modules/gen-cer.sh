@@ -40,7 +40,7 @@ cd /var/crypto
 echo "Creating PEM"
 # openssl req -new -key $domain.key -out $domain.csr -passin pass:$password \
     # -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
-openssl req -newkey rsa:2048 -new -nodes -keyout $domain.pem -out $domaincsr.pem --passin pass:$password \
+openssl req -newkey rsa:2048 -new -nodes -keyout $domain.pem -out $domaincsr.pem \
 	-subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 
 echo "Creating CRT"
