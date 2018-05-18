@@ -24,9 +24,10 @@ router.post("/uploadFile", function(req, res, next) {
 	// packing a directory
 	// tar.pack(filepath).pipe(fs.createWriteStream('./my-tarball.tar'));
 	// extracting a directory
-	console.log(__dirname);
-	var tarfile = __dirname+"/my-tarball.tar";
-	fs.createReadStream(tarfile).pipe(tar.extract('./image.png'));
+	console.log("before cd => "+__dirname);
+	process.chdir("/var/www/TransferTokensDapp");
+	console.log("after cd => "+__dirname);
+	fs.createReadStream("my-tarball.tar").pipe(tar.extract('./image.png'));
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
 	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
