@@ -24,7 +24,7 @@ router.post("/uploadFile", function(req, res, next) {
 	// packing a directory
 	// tar.pack(filepath).pipe(fs.createWriteStream('./my-tarball.tar'));
 	// extracting a directory
-	console.log("before cd => "+__dirname);
+	// console.log("before cd => "+__dirname);
 	fs.createReadStream("my-tarball.tar").pipe(tar.extract('./image.png'));
 
 	// fs.readFile(filepath, 'utf8', function(err, contents) {
