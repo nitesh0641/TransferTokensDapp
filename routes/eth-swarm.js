@@ -24,10 +24,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var read = fstream.Reader(filepath),
 		ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV),
 		writer = fstream.Writer('./image.png.enc');
-
-	// read.pipe(ency).pipe(writer);
-
-	read.pipe(dency).pipe(writer);
+	read.pipe(ency).pipe(writer);
 	
 	// swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
 	swarm.upload(filepath)
@@ -48,6 +45,7 @@ router.post("/downloadData", function(req, res, next) {
 	var read = fstream.Reader('./image.png.enc'),
 		dency = crypto.createDecipheriv('aes-256-ctr', pubkeyUser1),
 		writer = fstream.Writer('./image.png');
+	read.pipe(dency).pipe(writer);
 
 	swarm.download(fileHash)
 	.then(function(array){
