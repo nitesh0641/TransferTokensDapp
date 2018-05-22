@@ -18,10 +18,11 @@ var web3Message = '';
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var user = req.body.username;
+	var pass = req.body.password;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 
 	var read = fstream.Reader(filepath),
-		ency = crypto.createCipheriv('aes-256-ctr', pubkeyUser1),
+		ency = crypto.createCipheriv('aes-256-ctr', pubkey, pass),
 		writer = fstream.Writer('./image.png.enc');
 
 	// read.pipe(ency).pipe(writer);
@@ -62,7 +63,7 @@ router.post("/generateCrypto", function(req, res, next){
 	var user = req.body.username;
 	var pass = req.body.password;
 	var dirpath = "/var/crypto/"+user;
-	var filepath = "/var/crypto/"+user+"/publickKey.pem";
+	var filepath = "/var/crypto/"+user+"/pubkey.pem";
 
 	// -- create directory--
 	mkdirp(dirpath, function(err) {
@@ -84,7 +85,6 @@ router.post("/generateCrypto", function(req, res, next){
 			});
 		}
 	});
-
 	// res.json({"message": web3Message});
 });
 
