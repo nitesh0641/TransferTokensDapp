@@ -6,6 +6,7 @@ var path = require('path');
 var fs = require('fs');
 var fstream = require('fstream');
 const { exec } = require('child_process');
+var mkdirp = require('mkdirp');
 
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
@@ -64,14 +65,9 @@ router.post("/generateCrypto", function(req, res, next){
 	var filepath = "/var/crypto/"+user+"/publickKey.pem";
 
 	// -- create directory--
-	const mkdirSync = function (dirPath) {
-		try {
-			fs.mkdirSync(dirPath);
-			console.log("created");
-		} catch (err) {
-			if (err.code !== 'EEXIST') throw err
-		}
-	};
+	mkdirp(dirpath, function(err) { 
+		console.log("created");
+	});
 
 	var prime_length = 256;
 	var diffHell = crypto.createDiffieHellman(prime_length);
