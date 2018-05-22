@@ -60,30 +60,36 @@ router.post("/downloadData", function(req, res, next) {
 router.post("/generateCrypto", function(req, res, next){
 	var user = req.body.username;
 	var pass = req.body.password;
+	var dirpath = "/var/crypto/";
+	var filepath = "/var/crypto/"+user+"/publickKey.pem";
+
+	// -- create directory--
+	exec('cd '+dirpath, (err, stdout, stderr) => {
+	  if (err) {
+	    // node couldn't execute the command
+	    console.log("not able to cd");
+	  }
+	  else{
+	  	exec('mkdir '+user, (err, stdout, stderr) =>{
+	  		if (err) {
+			    // node couldn't execute the command
+			    console.log("not able to make dir "+user);
+			  }
+	  	});
+	  }
+	});
 
 	var prime_length = 256;
 	var diffHell = crypto.createDiffieHellman(prime_length);
 
 	diffHell.generateKeys('hex');
 	var key = diffHell.getPublicKey('hex');
-	var filepath = "/var/crypto/"+user+"/publickKey.pem";
 
 	fs.writeFile(filepath, key, function(err) {
 	    if(err) {
 	        console.log(err);
 	    }
 	}); 
-
-	// exec('cat *.js bad_file | wc -l', (err, stdout, stderr) => {
-	//   if (err) {
-	//     // node couldn't execute the command
-	//     return;
-	//   }
-
-	//   // the *entire* stdout and stderr (buffered)
-	//   console.log(`stdout: ${stdout}`);
-	//   console.log(`stderr: ${stderr}`);
-	// });
 
 	res.json({"message": web3Message});
 });
