@@ -51,11 +51,18 @@ router.post("/downloadData", function(req, res, next) {
 		array = swarm.toString(array);
 		var IV = new Buffer(req.body.password, 'hex');
 		console.log(IV.toString());
-		var read = fstream.Reader(array),
-			dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
-			writer = fstream.Writer(downloadpath+user);
-		read.pipe(dency).pipe(writer);
-	  	res.json({"filep": downloadpath+user});
+		
+		var cipher_blob = IV.toString().split("$");
+		if(cipher_blob[0] == 'n'){
+			var read = fstream.Reader(array),
+				dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
+				writer = fstream.Writer(downloadpath+user);
+			read.pipe(dency).pipe(writer);
+		  	res.json({"success": downloadpath+user});
+		}
+		else{
+			res.status(500).json({"failure": "There was some problem. Please try again later."});
+		}
 	  })
 	.catch(console.log);
 
