@@ -61,12 +61,12 @@ router.post("/generateCrypto", function(req, res, next){
 	var user = req.body.username;
 	var pass = req.body.password;
 
-	var prime_length = 60;
+	var prime_length = 256;
 	var diffHell = crypto.createDiffieHellman(prime_length);
 
-	diffHell.generateKeys('base64');
-	console.log("Public Key : " ,diffHell.getPublicKey('base64'));
-	console.log("Private Key : " ,diffHell.getPrivateKey('base64'));
+	diffHell.generateKeys('hex');
+	console.log("Public Key : " ,diffHell.getPublicKey('hex'));
+	console.log("Private Key : " ,diffHell.getPrivateKey('hex'));
 
 	// exec('cat *.js bad_file | wc -l', (err, stdout, stderr) => {
 	//   if (err) {
