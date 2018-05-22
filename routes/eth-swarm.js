@@ -23,7 +23,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 
 	// var IV = new Buffer(crypto.randomBytes(16));
-	var IV = new Buffer("123856089alchytk");
+	var IV = new Buffer("nc$1238*6089alch");
 	console.log(IV);
 	var read = fstream.Reader(filepath),
 		ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV),
