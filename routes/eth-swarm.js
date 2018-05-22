@@ -34,7 +34,7 @@ router.post("/uploadFile", function(req, res, next) {
 	  })
 	  .catch(console.log);
 
-	res.json({"hash": web3Message});
+	// res.json({"hash": web3Message});
 });
 
 router.post("/downloadData", function(req, res, next) {
