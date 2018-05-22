@@ -5,8 +5,7 @@ var crypto = require('crypto');
 var path = require('path');
 var fs = require('fs');
 var fstream = require('fstream');
-var tar = require('tar-fs')
-// var ursa = require('ursa');
+const { exec } = require('child_process');
 
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
@@ -17,29 +16,16 @@ var web3Message = '';
 
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
-	var pubkeyUser1 = '/var/crypto/user1/pubkey.pem';
-	var prikeyUser1 = '/var/crypto/user1/privkey.pem';
+	var user = req.body.username;
+	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 
-	// var read = fstream.Reader(filepath),
-	// 	ency = crypto.createCipher('aes-256-ctr', pubkeyUser1),
-	// 	writer = fstream.Writer('./image.png.enc');
+	var read = fstream.Reader(filepath),
+		ency = crypto.createCipheriv('aes-256-ctr', pubkeyUser1),
+		writer = fstream.Writer('./image.png.enc');
 
 	// read.pipe(ency).pipe(writer);
 
-	var read = fstream.Reader('./image.png.enc'),
-		dency = crypto.createDecipher('aes-256-ctr', pubkeyUser1),
-		writer = fstream.Writer('./image.png');
-
 	read.pipe(dency).pipe(writer);
-
-	// fs.readFile(filepath, 'utf8', function(err, contents) {
-	// 	encryptedFile = encrypt.encryptStringWithRsaPublicKey(crypto, path, fs, contents, pubkey);
-	//     var stream = fs.createWriteStream('/var/www/TransferTokensDapp/uploads/encrypted.png');
-	// 	stream.once('open', function(fd) {
-	// 	  stream.write(encryptedFile);
-	// 	  stream.end();
-	// 	});
-	// });
 	
 	// swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
 	//   .then(function(hash){
@@ -49,6 +35,63 @@ router.post("/uploadFile", function(req, res, next) {
 	//   .catch(console.log);
 
 	res.json({"hash": web3Message});
+});
+
+router.post("/downloadData", function(req, res, next) {
+
+	const fileHash = req.body.hash;
+	var prikey = '/var/crypto/key.pem';
+
+	var read = fstream.Reader('./image.png.enc'),
+		dency = crypto.createDecipheriv('aes-256-ctr', pubkeyUser1),
+		writer = fstream.Writer('./image.png');
+
+	swarm.download(fileHash)
+	.then(function(array){
+		array = swarm.toString(array);
+		// decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
+	  	res.json({"hash": array});
+	  })
+	.catch(console.log);
+
+	// res.json({"data": web3Message});
+});
+
+router.post("/generateCrypto", function(req, res, next){
+	var user = req.body.username;
+	var pass = rew.body.password;
+
+	var prime_length = 60;
+	var diffHell = crypto.createDiffieHellman(prime_length);
+
+	diffHell.generateKeys('hex');
+	console.log("Public Key : " ,diffHell.getPublicKey('hex'));
+	console.log("Private Key : " ,diffHell.getPrivateKey('hex'));
+
+	// exec('cat *.js bad_file | wc -l', (err, stdout, stderr) => {
+	//   if (err) {
+	//     // node couldn't execute the command
+	//     return;
+	//   }
+
+	//   // the *entire* stdout and stderr (buffered)
+	//   console.log(`stdout: ${stdout}`);
+	//   console.log(`stderr: ${stderr}`);
+	// });
+
+	res.json({"message": web3Message});
+});
+
+router.post("/downloadFile", function(req, res, next){
+	var filehash = req.body.filehash;
+	targetDir = "/var/www/TransferTokensDapp/downloads";
+
+	swarm.download("1b14503abd07770da8adb680a18507738390117499cce3114b5a4bc60f5fd9dd", "/var/www/TransferTokensDapp/downloads")
+	.then(function(path){
+	  	res.json({"filepath": path});
+		console.log(`Downloaded DApp to ${path}.`)
+	})
+	.catch(console.log);
 });
 
 // -- encryption using ursa
@@ -93,35 +136,6 @@ router.post("/uploadFile", function(req, res, next) {
 
 // 	// res.json({"hash": web3Message});
 // });
-
-router.post("/downloadData", function(req, res, next) {
-
-	const fileHash = req.body.hash;
-	var prikey = '/var/crypto/key.pem';
-
-	swarm.download(fileHash)
-	.then(function(array){
-		array = swarm.toString(array);
-		// decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
-	  	res.json({"hash": array});
-	  })
-	.catch(console.log);
-
-	// res.json({"data": web3Message});
-});
-
-router.post("/downloadFile", function(req, res, next){
-	var filehash = req.body.filehash;
-	targetDir = "/var/www/TransferTokensDapp/downloads";
-
-	swarm.download("1b14503abd07770da8adb680a18507738390117499cce3114b5a4bc60f5fd9dd", "/var/www/TransferTokensDapp/downloads")
-	.then(function(path){
-	  	res.json({"filepath": path});
-		console.log(`Downloaded DApp to ${path}.`)
-	})
-	.catch(console.log);
-});
-
 
 
 module.exports = router;
