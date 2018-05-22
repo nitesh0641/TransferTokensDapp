@@ -16,18 +16,19 @@ var encrypt = require('../modules/encrypt');
 var web3Message = '';
 
 router.post("/uploadFile", function(req, res, next) {
+	var filename = req.body.filename;
 	var filepath = req.body.filepath;
 	var user = req.body.username;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
+	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 
 	var IV = new Buffer(crypto.randomBytes(16));
 	var read = fstream.Reader(filepath),
 		ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV),
-		writer = fstream.Writer('./image.png.enc');
+		writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
 	
-	// swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
-	swarm.upload(filepath)
+	swarm.upload(protected+filename+".enc")
 	  .then(function(hash){
 	  	res.json({"hash": hash});
 	  })
