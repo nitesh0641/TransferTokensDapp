@@ -32,7 +32,7 @@ router.post("/uploadFile", function(req, res, next) {
 	
 	swarm.upload(protected+filename+".enc")
 	  .then(function(hash){
-	  	web3Message = {"hash":hash,"pass":pass.toString('hex')}
+	  	web3Message = {"hash":hash,"pass":pass.toString('base64')}
 	  	res.json({"success": web3Message});
 	  })
 	  .catch(console.log);
