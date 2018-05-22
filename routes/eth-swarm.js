@@ -40,20 +40,22 @@ router.post("/uploadFile", function(req, res, next) {
 });
 
 router.post("/downloadData", function(req, res, next) {
-
 	const fileHash = req.body.hash;
-	var prikey = '/var/crypto/key.pem';
-
-	var read = fstream.Reader('./image.png.enc'),
-		dency = crypto.createDecipheriv('aes-256-ctr', pubkeyUser1),
-		writer = fstream.Writer('./image.png');
-	read.pipe(dency).pipe(writer);
+	var user = req.body.username;
+	var IV = req.body.password;
+	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
+	var downloadpath = '/var/www/TransferTokensDapp/downloads/';
 
 	swarm.download(fileHash)
 	.then(function(array){
 		array = swarm.toString(array);
-		// decryptedFile = encrypt.decryptStringWithRsaPrivateKey(crypto, path, fs, array, prikey);
-	  	res.json({"hash": array});
+		var IV = new Buffer(pass, 'hex');
+		console.log(IV);
+		var read = fstream.Reader(array),
+			dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
+			writer = fstream.Writer(downloadpath+user);
+		read.pipe(dency).pipe(writer);
+	  	res.json({"file": downloadpath+user});
 	  })
 	.catch(console.log);
 
