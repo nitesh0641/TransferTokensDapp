@@ -23,7 +23,6 @@ router.post("/uploadFile", function(req, res, next) {
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 
 	// var IV = new Buffer(crypto.randomBytes(16));
-	var pass = "nc$1238*6089alch";
 	var IV = new Buffer("nc$1238*6089alch");
 	var read = fstream.Reader(filepath),
 		ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV),
@@ -32,7 +31,7 @@ router.post("/uploadFile", function(req, res, next) {
 	
 	swarm.upload(protected+filename+".enc")
 	  .then(function(hash){
-	  	web3Message = {"hash":hash,"pass":pass.toString('base64')}
+	  	web3Message = {"hash":hash,"pass":IV.toString('hex')}
 	  	res.json({"success": web3Message});
 	  })
 	  .catch(console.log);
@@ -51,7 +50,7 @@ router.post("/downloadData", function(req, res, next) {
 	.then(function(array){
 		array = swarm.toString(array);
 		var IV = new Buffer(req.body.password, 'hex');
-		console.log(IV);
+		console.log(IV.toString());
 		var read = fstream.Reader(array),
 			dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
 			writer = fstream.Writer(downloadpath+user);
