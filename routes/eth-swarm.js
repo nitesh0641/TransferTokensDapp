@@ -78,13 +78,14 @@ router.post("/generateCrypto", function(req, res, next){
 			        console.log(err);
 			    }
 			    else{
-			    	return web3Message = "Crypto generated!!"
+			    	web3Message = "Crypto generated!!"
+			    	res.json({"message": web3Message});
 			    }
 			});
 		}
 	});
 
-	res.json({"message": web3Message});
+	// res.json({"message": web3Message});
 });
 
 router.post("/downloadFile", function(req, res, next){
