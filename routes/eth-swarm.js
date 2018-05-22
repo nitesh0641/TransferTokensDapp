@@ -29,8 +29,7 @@ router.post("/uploadFile", function(req, res, next) {
 	// swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
 	swarm.upload(filepath)
 	  .then(function(hash){
-	  	web3Message = hash;
-	  	res.json({"hash": web3Message});
+	  	res.json({"hash": hash});
 	  })
 	  .catch(console.log);
 
