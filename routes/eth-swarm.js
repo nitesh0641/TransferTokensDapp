@@ -66,26 +66,23 @@ router.post("/generateCrypto", function(req, res, next){
 
 	// -- create directory--
 	mkdirp(dirpath, function(err) {
-		if(err)
-		{
-			console.log(err);
-		}
-		else{
-			console.log("created");
+		if(!err){
+			var prime_length = 256;
+			var diffHell = crypto.createDiffieHellman(prime_length);
+
+			diffHell.generateKeys('hex');
+			var key = diffHell.getPublicKey('hex');
+
+			fs.writeFile(filepath, key, function(err) {
+			    if(err) {
+			        console.log(err);
+			    }
+			    else{
+			    	web3Message = "Crypto generated!!"
+			    }
+			});
 		}
 	});
-
-	var prime_length = 256;
-	var diffHell = crypto.createDiffieHellman(prime_length);
-
-	diffHell.generateKeys('hex');
-	var key = diffHell.getPublicKey('hex');
-
-	fs.writeFile(filepath, key, function(err) {
-	    if(err) {
-	        console.log(err);
-	    }
-	}); 
 
 	res.json({"message": web3Message});
 });
