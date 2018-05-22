@@ -66,7 +66,8 @@ router.post("/generateCrypto", function(req, res, next){
 	// -- create directory--
 	const mkdirSync = function (dirPath) {
 		try {
-			fs.mkdirSync(dirPath)
+			fs.mkdirSync(dirPath);
+			console.log("created");
 		} catch (err) {
 			if (err.code !== 'EEXIST') throw err
 		}
