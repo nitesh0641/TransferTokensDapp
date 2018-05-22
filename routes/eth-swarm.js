@@ -53,7 +53,7 @@ router.post("/downloadData", function(req, res, next) {
 		console.log(IV.toString());
 		
 		var cipher_blob = IV.toString().split("$");
-		if(cipher_blob[0] == 'n'){
+		if(cipher_blob[0] == 'nc'){
 			var read = fstream.Reader(array),
 				dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
 				writer = fstream.Writer(downloadpath+user);
