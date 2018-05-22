@@ -49,13 +49,13 @@ router.post("/downloadData", function(req, res, next) {
 	swarm.download(fileHash)
 	.then(function(array){
 		array = swarm.toString(array);
-		var IV = new Buffer(pass, 'hex');
+		var IV = new Buffer(IV, 'hex');
 		console.log(IV);
 		var read = fstream.Reader(array),
 			dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
 			writer = fstream.Writer(downloadpath+user);
 		read.pipe(dency).pipe(writer);
-	  	res.json({"file": downloadpath+user});
+	  	res.json({"filep": downloadpath+user});
 	  })
 	.catch(console.log);
 
