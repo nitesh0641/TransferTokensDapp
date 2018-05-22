@@ -65,8 +65,14 @@ router.post("/generateCrypto", function(req, res, next){
 	var filepath = "/var/crypto/"+user+"/publickKey.pem";
 
 	// -- create directory--
-	mkdirp(dirpath, function(err) { 
-		console.log("created");
+	mkdirp(dirpath, function(err) {
+		if(err)
+		{
+			console.log(err);
+		}
+		else{
+			console.log("created");
+		}
 	});
 
 	var prime_length = 256;
