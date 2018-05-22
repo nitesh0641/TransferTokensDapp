@@ -18,11 +18,11 @@ var web3Message = '';
 router.post("/uploadFile", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var user = req.body.username;
-	var pass = req.body.password;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 
+	var IV = new Buffer(crypto.randomBytes(16));
 	var read = fstream.Reader(filepath),
-		ency = crypto.createCipheriv('aes-256-ctr', pubkey),
+		ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV),
 		writer = fstream.Writer('./image.png.enc');
 
 	// read.pipe(ency).pipe(writer);
@@ -62,7 +62,6 @@ router.post("/downloadData", function(req, res, next) {
 
 router.post("/generateCrypto", function(req, res, next){
 	var user = req.body.username;
-	var pass = req.body.password;
 	var dirpath = "/var/crypto/"+user;
 	var filepath = "/var/crypto/"+user+"/pubkey.pem";
 
