@@ -22,7 +22,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 
 	var read = fstream.Reader(filepath),
-		ency = crypto.createCipheriv('aes-256-ctr', pubkey, pass),
+		ency = crypto.createCipheriv('aes-256-ctr', pubkey, new Buffer(pass)),
 		writer = fstream.Writer('./image.png.enc');
 
 	// read.pipe(ency).pipe(writer);
