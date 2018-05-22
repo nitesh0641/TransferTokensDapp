@@ -78,7 +78,7 @@ router.post("/generateCrypto", function(req, res, next){
 			        console.log(err);
 			    }
 			    else{
-			    	web3Message = "Crypto generated!!"
+			    	return web3Message = "Crypto generated!!"
 			    }
 			});
 		}
