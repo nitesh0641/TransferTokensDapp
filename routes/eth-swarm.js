@@ -67,13 +67,13 @@ router.post("/generateCrypto", function(req, res, next){
 	exec('cd '+dirpath, (err, stdout, stderr) => {
 	  if (err) {
 	    // node couldn't execute the command
-	    console.log("not able to cd");
+	    return console.log("not able to cd");
 	  }
 	  else{
 	  	exec('mkdir '+user, (err, stdout, stderr) =>{
 	  		if (err) {
 			    // node couldn't execute the command
-			    console.log("not able to make dir "+user);
+			    return console.log("not able to make dir "+user);
 			  }
 	  	});
 	  }
