@@ -21,9 +21,8 @@ router.post("/uploadFile", function(req, res, next) {
 	var pass = req.body.password;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 
-	var buf = new Buffer(pass);
 	var read = fstream.Reader(filepath),
-		ency = crypto.createCipheriv('aes-256-ctr', pubkey, buf),
+		ency = crypto.createCipheriv('aes-256-ctr', pubkey),
 		writer = fstream.Writer('./image.png.enc');
 
 	// read.pipe(ency).pipe(writer);
@@ -31,11 +30,12 @@ router.post("/uploadFile", function(req, res, next) {
 	read.pipe(dency).pipe(writer);
 	
 	// swarm.upload('/var/www/TransferTokensDapp/uploads/encrypted.png')
-	//   .then(function(hash){
-	//   	web3Message = hash;
-	//   	res.json({"hash": web3Message});
-	//   })
-	//   .catch(console.log);
+	swarm.upload(filepath)
+	  .then(function(hash){
+	  	web3Message = hash;
+	  	res.json({"hash": web3Message});
+	  })
+	  .catch(console.log);
 
 	res.json({"hash": web3Message});
 });
