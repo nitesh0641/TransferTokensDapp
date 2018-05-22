@@ -42,14 +42,14 @@ router.post("/uploadFile", function(req, res, next) {
 router.post("/downloadData", function(req, res, next) {
 	const fileHash = req.body.hash;
 	var user = req.body.username;
-	var IV = req.body.password;
+	var pass = req.body.password;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads/';
 
 	swarm.download(fileHash)
 	.then(function(array){
 		array = swarm.toString(array);
-		var IV = new Buffer(IV, 'hex');
+		var IV = new Buffer(req.body.password, 'hex');
 		console.log(IV);
 		var read = fstream.Reader(array),
 			dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV),
