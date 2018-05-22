@@ -59,7 +59,7 @@ router.post("/downloadData", function(req, res, next) {
 
 router.post("/generateCrypto", function(req, res, next){
 	var user = req.body.username;
-	var pass = rew.body.password;
+	var pass = req.body.password;
 
 	var prime_length = 60;
 	var diffHell = crypto.createDiffieHellman(prime_length);
