@@ -65,8 +65,14 @@ router.post("/generateCrypto", function(req, res, next){
 	var diffHell = crypto.createDiffieHellman(prime_length);
 
 	diffHell.generateKeys('hex');
-	console.log("Public Key : " ,diffHell.getPublicKey('hex'));
-	console.log("Private Key : " ,diffHell.getPrivateKey('hex'));
+	var key = diffHell.getPublicKey('hex');
+	var filepath = "/var/crypto/"+user+"/publickKey.pem";
+
+	fs.writeFile(filepath, key, function(err) {
+	    if(err) {
+	        console.log(err);
+	    }
+	}); 
 
 	// exec('cat *.js bad_file | wc -l', (err, stdout, stderr) => {
 	//   if (err) {
