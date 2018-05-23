@@ -54,7 +54,7 @@ router.post("/downloadData", function(req, res, next) {
 
 	swarm.download(fileHash)
 	.then(function(downloadData){
-		downloadData = swarm.toString(downloadData);
+		// downloadData = swarm.toString(downloadData);
 		var IV = new Buffer(req.body.password, 'hex');
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
