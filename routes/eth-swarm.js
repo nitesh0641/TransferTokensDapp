@@ -23,16 +23,17 @@ router.post("/uploadFile", function(req, res, next) {
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 
 	// var IV = new Buffer(crypto.randomBytes(16));
-	var IV = new Buffer("nc$1238*6089alch");
+	// var IV = new Buffer("nc$1238*6089alch");
+	var IV = "nc$1238*6089alch";
 	var read = fstream.Reader(filepath);
 	// var	ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV);
-	var	ency = crypto.createCipher('aes-256-ctr', pubkey, "nc$1238*6089alch");
+	var	ency = crypto.createCipher('aes-256-ctr', pubkey, IV);
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
 	
 	swarm.upload(protected+filename+".enc")
 	  .then(function(hash){
-	  	web3Message = {"hash":hash,"pass":IV.toString('hex')}
+	  	web3Message = {"hash":hash,"pass":IV.toString('base64')}
 	  	res.json({"success": web3Message});
 	  })
 	  .catch(console.log);
