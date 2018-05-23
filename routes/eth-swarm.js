@@ -52,7 +52,7 @@ router.post("/downloadData", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads/';
 
-	swarm.download(fileHash)
+	swarm.download(fileHash, "/var/www/TransferTokensDapp/downloads")
 	.then(function(downloadData){
 		// downloadData = swarm.toString(downloadData);
 		var IV = new Buffer(req.body.password, 'hex');
