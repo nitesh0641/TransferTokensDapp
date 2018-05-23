@@ -53,9 +53,9 @@ router.post("/downloadData", function(req, res, next) {
 	var user = req.body.username;
 	var pass = req.body.password;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
-	var downloadpath = '/var/www/TransferTokensDapp/downloads/';
+	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 
-	bzz.download(fileHash, "./")
+	bzz.download(fileHash, downloadpath)
 	.then(function(downloadData){
 		// downloadData = swarm.toString(downloadData);
 		var IV = new Buffer(req.body.password, 'hex');
