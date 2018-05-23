@@ -39,7 +39,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var file_bytes = fs.readFileSync(filepath);
 	var file = {
 	  type: "image/png",
-	  data: filepath)
+	  data: filepath
 	};
 	var dir = {"": file};
 
