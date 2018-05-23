@@ -7,6 +7,7 @@ var fs = require('fs');
 var fstream = require('fstream');
 const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
+var randomstring = require("randomstring");
 
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
@@ -22,7 +23,8 @@ router.post("/uploadFile", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 
-	var forIV = "nc$"+crypto.randomBytes(15);
+	// var forIV = "nc$"+crypto.randomBytes(15);
+	var forIV = "nc$"+randomstring.generate(13);
 	console.log(forIV);
 	var IV = new Buffer(forIV);
 	// var IV = new Buffer("nc$1238*6089alch");
