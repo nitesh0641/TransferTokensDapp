@@ -50,7 +50,6 @@ router.post("/downloadData", function(req, res, next) {
 	.then(function(array){
 		array = swarm.toString(array);
 		var IV = new Buffer(req.body.password, 'hex');
-		
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
 			var read = fstream.Reader(array),
