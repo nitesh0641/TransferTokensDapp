@@ -54,8 +54,8 @@ router.post("/downloadData", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 
-	var file = fs.createWriteStream(downloadpath+"/"+user+type);
-	var request = http.get("http://localhost:8500:bzz:/"+fileHash, function(response) {
+	var file = fs.createWriteStream(downloadpath+"/"+user+"."+type);
+	var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
 		response.pipe(file);
 		res.json({"success": file});
 	});
