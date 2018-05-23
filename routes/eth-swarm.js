@@ -104,7 +104,7 @@ router.post("/generateCrypto", function(req, res, next){
 
 router.post("/downloadFile", function(req, res, next){
 	var filehash = req.body.filehash;
-	var targetDir = "/var/www/TransferTokensDapp/downloads/";
+	var targetDir = "/var/www/TransferTokensDapp/downloads";
 
 	swarm.download(filehash, targetDir)
 	.then(function(path){
