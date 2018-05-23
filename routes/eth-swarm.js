@@ -25,7 +25,6 @@ router.post("/uploadFile", function(req, res, next) {
 
 	// var forIV = "nc$"+crypto.randomBytes(15);
 	var forIV = "nc$"+randomstring.generate(13);
-	console.log(forIV);
 	var IV = new Buffer(forIV);
 	// var IV = new Buffer("nc$1238*6089alch");
 	var read = fstream.Reader(filepath);
@@ -34,16 +33,14 @@ router.post("/uploadFile", function(req, res, next) {
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
 	
-	path.exists(protected+filename+".enc", function(exists) { 
-	  if (exists) { 
-	  	swarm.upload({path: protected+filename+".enc", kind: "file"})
+	setTimeout(function() {
+	    swarm.upload({path: protected+filename+".enc", kind: "file"})
 		.then(function(hash){
 			web3Message = {"hash":hash,"pass":IV.toString("hex")}
 			res.json({"hash": web3Message});
 		})
 		.catch(console.log);
-	  } 
-	}); 
+	}, 500);
 	
 	// res.json({"hash": web3Message});
 });
