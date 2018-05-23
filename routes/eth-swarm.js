@@ -54,21 +54,20 @@ router.post("/downloadData", function(req, res, next) {
 	swarm.download(fileHash)
 	.then(function(array){
 		array = swarm.toString(array);
-		// var IV = new Buffer(req.body.password, 'hex');
-		// var cipher_blob = IV.toString().split("$");
-		// if(cipher_blob[0] == 'nc'){
-		// 	var IV = IV.toString();
-		// 	var read = fstream.Reader(array);
-		// 	// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-		// 	var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-		// 	var	writer = fstream.Writer(downloadpath+user);
-		// 	read.pipe(dency).pipe(writer);
-		//   	res.json({"success": downloadpath+user});
-		// }
-		// else{
-		// 	res.status(500).json({"failure": "There was some problem. Please try again later."});
-		// }
-		res.json({"success": array});
+		var IV = new Buffer(req.body.password, 'hex');
+		var cipher_blob = IV.toString().split("$");
+		if(cipher_blob[0] == 'nc'){
+			var IV = IV.toString();
+			var read = fstream.Reader(array);
+			// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
+			var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+			var	writer = fstream.Writer(downloadpath+user);
+			read.pipe(dency).pipe(writer);
+			res.json({"success": downloadpath+user});
+		}
+		else{
+			res.status(500).json({"failure": "There was some problem. Please try again later."});
+		}
 	  })
 	.catch(console.log);
 
@@ -105,9 +104,9 @@ router.post("/generateCrypto", function(req, res, next){
 
 router.post("/downloadFile", function(req, res, next){
 	var filehash = req.body.filehash;
-	targetDir = "/var/www/TransferTokensDapp/downloads";
+	var targetDir = "/var/www/TransferTokensDapp/downloads/";
 
-	swarm.download("1b14503abd07770da8adb680a18507738390117499cce3114b5a4bc60f5fd9dd", "/var/www/TransferTokensDapp/downloads")
+	swarm.download(filehash, targetDir)
 	.then(function(path){
 	  	res.json({"filepath": path});
 		console.log(`Downloaded DApp to ${path}.`)
