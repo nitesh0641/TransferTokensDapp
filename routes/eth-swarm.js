@@ -34,7 +34,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
 	
-	if (path.existsSync(protected+filename+".enc")) { 
+	if (fs.existsSync(protected+filename+".enc")) { 
 		swarm.upload({path: protected+filename+".enc", kind: "file"})
 		.then(function(hash){
 			web3Message = {"hash":hash,"pass":IV.toString("hex")}
