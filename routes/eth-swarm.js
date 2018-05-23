@@ -105,7 +105,7 @@ router.post("/generateCrypto", function(req, res, next){
 	// -- create directory--
 	mkdirp(dirpath, function(err) {
 		if(!err){
-			var prime_length = 32;
+			var prime_length = 256;
 			var diffHell = crypto.createDiffieHellman(prime_length);
 
 			diffHell.generateKeys('hex');
