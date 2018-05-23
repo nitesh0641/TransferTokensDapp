@@ -56,12 +56,12 @@ router.post("/downloadData", function(req, res, next) {
 	.then(function(array){
 		array = swarm.toString(array);
 		var IV = new Buffer(req.body.password, 'hex');
+		console.log(IV);
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
-			var IV = IV.toString();
 			var read = fstream.Reader(array);
-			// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-			var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+			var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
+			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
 			var	writer = fstream.Writer(downloadpath+user);
 			read.pipe(dency).pipe(writer);
 			res.json({"success": downloadpath+user});
