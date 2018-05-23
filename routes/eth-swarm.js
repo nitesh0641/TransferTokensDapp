@@ -8,9 +8,7 @@ var fstream = require('fstream');
 const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
-
-var Bzz = require('web3-bzz');
-var bzz = new Bzz("http://127.0.0.1:8500");
+var http = require('http');
 
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
@@ -49,31 +47,38 @@ router.post("/uploadFile", function(req, res, next) {
 });
 
 router.post("/downloadData", function(req, res, next) {
-	const fileHash = req.body.hash;
+	var fileHash = req.body.hash;
 	var user = req.body.username;
 	var pass = req.body.password;
+	var type = req.body.type;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 
-	bzz.download(fileHash, downloadpath)
-	.then(function(downloadData){
-		// downloadData = swarm.toString(downloadData);
-		var IV = new Buffer(req.body.password, 'hex');
-		var cipher_blob = IV.toString().split("$");
-		if(cipher_blob[0] == 'nc'){
-			// var read = fstream.Reader(downloadData);
-			// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-			// // var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-			// var	writer = fstream.Writer(downloadpath+user);
-			// read.pipe(dency).pipe(writer);
-			// res.json({"success": downloadpath+user});
-			res.json({"success": downloadData});
-		}
-		else{
-			res.status(500).json({"failure": "There was some problem. Please try again later."});
-		}
-	  })
-	.catch(console.log);
+	var file = fs.createWriteStream(downloadpath+"/"+user+type);
+	var request = http.get("http://localhost:8500:bzz:/"+fileHash, function(response) {
+		response.pipe(file);
+		res.json({"success": file});
+	});
+
+	// swarm.download(fileHash, downloadpath)
+	// .then(function(downloadData){
+	// 	// downloadData = swarm.toString(downloadData);
+	// 	var IV = new Buffer(req.body.password, 'hex');
+	// 	var cipher_blob = IV.toString().split("$");
+	// 	if(cipher_blob[0] == 'nc'){
+	// 		// var read = fstream.Reader(downloadData);
+	// 		// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
+	// 		// // var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+	// 		// var	writer = fstream.Writer(downloadpath+user+type);
+	// 		// read.pipe(dency).pipe(writer);
+	// 		// res.json({"success": downloadpath+user+type});
+	// 		res.json({"success": downloadData});
+	// 	}
+	// 	else{
+	// 		res.status(500).json({"failure": "There was some problem. Please try again later."});
+	// 	}
+	//   })
+	// .catch(console.log);
 
 	// res.json({"data": web3Message});
 });
