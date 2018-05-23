@@ -9,6 +9,9 @@ const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 
+var Bzz = require('web3-bzz');
+var bzz = new Bzz("http://127.0.0.1:8500");
+
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
 const swarm = require("swarm-js").at("http://127.0.0.1:8500");
@@ -52,7 +55,7 @@ router.post("/downloadData", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads/';
 
-	swarm.download(fileHash, "./")
+	bzz.download(fileHash, "./")
 	.then(function(downloadData){
 		// downloadData = swarm.toString(downloadData);
 		var IV = new Buffer(req.body.password, 'hex');
