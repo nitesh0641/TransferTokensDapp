@@ -24,16 +24,19 @@ router.post("/uploadFile", function(req, res, next) {
 
 	// var IV = new Buffer(crypto.randomBytes(16));
 	// var IV = new Buffer("nc$1238*6089alch");
+
 	var IV = "nc$1238*6089alch";
 	var read = fstream.Reader(filepath);
 	// var	ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV);
-	var	ency = crypto.createCipher('aes-192-ccm', pubkey, IV);
+	var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
 	
+	var IV = new Buffer("nc$1238*6089alch");
+
 	swarm.upload(protected+filename+".enc")
 	  .then(function(hash){
-	  	web3Message = {"hash":hash,"pass":IV.toString("binary")}
+	  	web3Message = {"hash":hash,"pass":IV.toString("hex")}
 	  	res.json({"success": web3Message});
 	  })
 	  .catch(console.log);
@@ -54,9 +57,10 @@ router.post("/downloadData", function(req, res, next) {
 		var IV = new Buffer(req.body.password, 'hex');
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
+			var IV = IV.toString();
 			var read = fstream.Reader(array);
 			// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-			var	dency = crypto.createDecipher('aes-192-ccm', pubkey, IV);
+			var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
 			var	writer = fstream.Writer(downloadpath+user);
 			read.pipe(dency).pipe(writer);
 		  	res.json({"success": downloadpath+user});
