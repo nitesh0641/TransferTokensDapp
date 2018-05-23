@@ -34,13 +34,15 @@ router.post("/uploadFile", function(req, res, next) {
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
 	
-	swarm.upload({path: protected+filename+".enc", kind: "file"})
-	.then(function(hash){
-		web3Message = {"hash":hash,"pass":IV.toString("hex")}
-		res.json({"hash": web3Message});
-	})
-	.catch(console.log);
-
+	if (path.existsSync(protected+filename+".enc")) { 
+		swarm.upload({path: protected+filename+".enc", kind: "file"})
+		.then(function(hash){
+			web3Message = {"hash":hash,"pass":IV.toString("hex")}
+			res.json({"hash": web3Message});
+		})
+		.catch(console.log);
+	} 
+	
 	// res.json({"hash": web3Message});
 });
 
