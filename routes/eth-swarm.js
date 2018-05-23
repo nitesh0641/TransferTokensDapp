@@ -25,7 +25,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 
 	// var forIV = "nc$"+crypto.randomBytes(15);
-	var forIV = "nc$"+randomstring.generate(3);
+	var forIV = "nc$"+randomstring.generate(125);
 	var IV = new Buffer(forIV);
 	// var IV = new Buffer("nc$1238*6089alch");
 	var read = fstream.Reader(filepath);
