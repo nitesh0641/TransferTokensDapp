@@ -53,18 +53,18 @@ router.post("/downloadData", function(req, res, next) {
 	var downloadpath = '/var/www/TransferTokensDapp/downloads/';
 
 	swarm.download(fileHash)
-	.then(function(array){
-		array = swarm.toString(array);
+	.then(function(downloadData){
+		downloadData = swarm.toString(downloadData);
 		var IV = new Buffer(req.body.password, 'hex');
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
-			var read = fstream.Reader(array);
-			var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-			var	writer = fstream.Writer(downloadpath+user);
-			read.pipe(dency).pipe(writer);
+			// var read = fstream.Reader(downloadData);
+			// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
+			// // var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+			// var	writer = fstream.Writer(downloadpath+user);
+			// read.pipe(dency).pipe(writer);
 			// res.json({"success": downloadpath+user});
-			res.json({"success": array});
+			res.json({"success": downloadData});
 		}
 		else{
 			res.status(500).json({"failure": "There was some problem. Please try again later."});
