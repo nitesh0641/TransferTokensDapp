@@ -53,11 +53,25 @@ router.post("/downloadData", function(req, res, next) {
 	var type = req.body.type;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
+	var downloadFile = downloadpath+"/"+user+"."+type;
 
-	var file = fs.createWriteStream(downloadpath+"/"+user+"."+type);
+	var file = fs.createWriteStream(downloadFile);
 	var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
 		response.pipe(file);
-		res.json({"success": file});
+		var IV = new Buffer(req.body.password, 'hex');
+		var cipher_blob = IV.toString().split("$");
+		if(cipher_blob[0] == 'nc'){
+			var read = fstream.Reader(downloadFile);
+			var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
+			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+			var	writer = fstream.Writer(downloadFile);
+			read.pipe(dency).pipe(writer);
+			res.json({"success": downloadFile});
+			// res.json({"success": downloadData});
+		}
+		else{
+			res.status(500).json({"failure": "There was some problem. Please try again later."});
+		}
 	});
 
 	// swarm.download(fileHash, downloadpath)
