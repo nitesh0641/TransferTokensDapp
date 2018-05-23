@@ -34,7 +34,8 @@ router.post("/uploadFile", function(req, res, next) {
 	
 	var IV = new Buffer("nc$1238*6089alch");
 
-	swarm.upload(protected+filename+".enc")
+	// swarm.upload(protected+filename+".enc")
+	swarm.upload(filepath)
 	  .then(function(hash){
 	  	web3Message = {"hash":hash,"pass":IV.toString("hex")}
 	  	res.json({"success": web3Message});
