@@ -120,8 +120,7 @@ router.post("/generateCrypto", function(req, res, next){
 			var keygen = exec('openssl enc -aes-256-cbc -k secret -P -md sha1',
 			        (error, stdout, stderr) => {
 			        	output = stdout.split("\n");
-
-			            res.json({"message": output[1]});
+			        	key = output[1].split("=");
 			        });
 			// var prime_length = 256;
 			// var diffHell = crypto.createDiffieHellman(prime_length);
@@ -129,15 +128,15 @@ router.post("/generateCrypto", function(req, res, next){
 			// diffHell.generateKeys('hex');
 			// var key = diffHell.getPublicKey('hex');
 
-			// fs.writeFile(filepath, key, function(err) {
-			//     if(err) {
-			//         console.log(err);
-			//     }
-			//     else{
-			//     	web3Message = "Crypto generated!!"
-			//     	res.json({"message": web3Message});
-			//     }
-			// });
+			fs.writeFile(filepath, key[1], function(err) {
+			    if(err) {
+			        console.log(err);
+			    }
+			    else{
+			    	web3Message = "Crypto generated!!"
+			    	res.json({"message": web3Message});
+			    }
+			});
 		}
 	});
 	// res.json({"message": web3Message});
