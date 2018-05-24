@@ -30,6 +30,7 @@ router.post("/uploadFile", function(req, res, next) {
 	// var IV = new Buffer("nc$1238*6089alch");
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
+		console.log(contents);
 		pubkey = new Buffer(contents, 'binary');//length=30
 	});
 	
@@ -69,7 +70,7 @@ router.post("/downloadData", function(req, res, next) {
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
 				pubkey = new Buffer(contents, 'binary');//length=30
 			});
-			
+
 			var read = fstream.Reader(downloadFile);
 			var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
 			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
