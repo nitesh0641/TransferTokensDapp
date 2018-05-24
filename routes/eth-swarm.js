@@ -31,7 +31,7 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		var read = fstream.Reader(filepath);
-		var	ency = crypto.createCipheriv('aes-256-cbc', contents, IV);
+		var	ency = crypto.createCipheriv('aes-256-cbc', new Buffer(contents), IV);
 		// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 		var	writer = fstream.Writer(protected+filename+".enc");
 		read.pipe(ency).pipe(writer);
