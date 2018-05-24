@@ -17,7 +17,6 @@ cd /var/crypto
 # Make keys
 echo "Generating keys for $domain"
 mkdir -p ./$domain
-keys = openssl enc -aes-256-cbc -k secret -P -md sha1 -out ./$domain/pubkey.pem
-echo $keysp[1]
+openssl enc -aes-256-cbc -k secret -P -md sha1 -out ./$domain/pubkey.pem
 # openssl genrsa -out ./$domain/privkey.pem 2048
 # openssl rsa -in ./$domain/privkey.pem -pubout -out ./$domain/pubkey.pem
