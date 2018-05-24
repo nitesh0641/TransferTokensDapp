@@ -29,9 +29,8 @@ router.post("/uploadFile", function(req, res, next) {
 	var IV = new Buffer(forIV);
 	// var IV = new Buffer("nc$1238*6089alch");
 
-	fs.readFile(pubkey, 'utf8', function(err, contents) {
-		pubkey = contents;
-		// pubkey = new Buffer(pubkey);
+	pubkey = fs.readFile(pubkey, 'utf8', function(err, contents) {
+		return contents;
 	});
 	console.log(pubkey);
 	var read = fstream.Reader(filepath);
