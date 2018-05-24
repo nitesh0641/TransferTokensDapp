@@ -29,24 +29,22 @@ router.post("/uploadFile", function(req, res, next) {
 	var IV = new Buffer(forIV);
 	// var IV = new Buffer("nc$1238*6089alch");
 
-	pubkey = fs.readFile(pubkey, 'utf8', function(err, contents) {
-		return contents;
+	fs.readFile(pubkey, 'utf8', function(err, contents) {
+		var read = fstream.Reader(filepath);
+		var	ency = crypto.createCipheriv('aes-256-cbc', contents, IV);
+		// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
+		var	writer = fstream.Writer(protected+filename+".enc");
+		read.pipe(ency).pipe(writer);
+		
+		setTimeout(function() {
+		    swarm.upload({path: protected+filename+".enc", kind: "file"})
+			.then(function(hash){
+				web3Message = {"hash":hash,"pass":IV.toString("hex")}
+				res.json({"hash": web3Message});
+			})
+			.catch(console.log);
+		}, 500);
 	});
-	console.log(pubkey);
-	var read = fstream.Reader(filepath);
-	var	ency = crypto.createCipheriv('aes-256-cbc', pubkey, IV);
-	// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
-	var	writer = fstream.Writer(protected+filename+".enc");
-	read.pipe(ency).pipe(writer);
-	
-	setTimeout(function() {
-	    swarm.upload({path: protected+filename+".enc", kind: "file"})
-		.then(function(hash){
-			web3Message = {"hash":hash,"pass":IV.toString("hex")}
-			res.json({"hash": web3Message});
-		})
-		.catch(console.log);
-	}, 500);
 	
 	// res.json({"hash": web3Message});
 });
