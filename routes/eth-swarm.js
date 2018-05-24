@@ -30,11 +30,12 @@ router.post("/uploadFile", function(req, res, next) {
 	// var IV = new Buffer("nc$1238*6089alch");
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
-		pubkey = new Buffer(contents, 'binary');//length=30
+		pubkey = new Buffer(contents, 'hex');//length=30
+		console.log(pubkey);
 	});
 	
 	var read = fstream.Reader(filepath);
-	var	ency = crypto.createCipheriv('aes-128-cbc', pubkey, IV);
+	var	ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV);
 	// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
