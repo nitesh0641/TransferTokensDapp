@@ -30,9 +30,9 @@ router.post("/uploadFile", function(req, res, next) {
 	// var IV = new Buffer("nc$1238*6089alch");
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
-		// pubkey = new Buffer(contents, 'base64');
-		pubkey = contents.toString('binary', 0, 16);
-		//length=16
+		pubkey = contents.substr(0, 31);
+		pubkey = new Buffer(contents, 'base64');
+		//length=32
 		console.log(pubkey);
 	});
 	
