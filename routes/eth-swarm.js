@@ -31,7 +31,7 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		pubkey = contents.substr(0, 31);
-		pubkey = new Buffer(contents, 'base64');
+		pubkey = new Buffer(contents, 'binary');
 		//length=32
 		console.log(pubkey);
 	});
