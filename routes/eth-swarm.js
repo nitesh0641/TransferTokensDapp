@@ -120,7 +120,8 @@ router.post("/generateCrypto", function(req, res, next){
 			var keygen = exec('openssl enc -aes-256-cbc -k secret -P -md sha1',
 			        (error, stdout, stderr) => {
 			        	output = stdout.split("\n");
-			            console.log(output);
+
+			            res.json({"message": output[1]});
 			        });
 			// var prime_length = 256;
 			// var diffHell = crypto.createDiffieHellman(prime_length);
