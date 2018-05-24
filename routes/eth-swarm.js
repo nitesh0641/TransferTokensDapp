@@ -65,16 +65,14 @@ router.post("/downloadData", function(req, res, next) {
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
-				pubkey = new Buffer(contents, 'binary');//length=30
-			});
-
-			var read = fstream.Reader(downloadFile);
-			var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-			var	writer = fstream.Writer(downloadFile);
-			read.pipe(dency).pipe(writer);
-			res.json({"success": downloadFile});
-			// res.json({"success": downloadData});
+				var read = fstream.Reader(downloadFile);
+				var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV);
+				// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+				var	writer = fstream.Writer(downloadFile);
+				read.pipe(dency).pipe(writer);
+				res.json({"success": downloadFile});
+				// res.json({"success": downloadData});
+			});			
 		}
 		else{
 			res.status(500).json({"failure": "There was some problem. Please try again later."});
