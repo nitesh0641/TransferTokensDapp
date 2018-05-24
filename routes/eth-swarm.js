@@ -30,11 +30,11 @@ router.post("/uploadFile", function(req, res, next) {
 	// var IV = new Buffer("nc$1238*6089alch");
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
-		var key = new Buffer(contents, 'binary');//length=30
+		pubkey = new Buffer(contents, 'binary');//length=30
 	});
 	
 	var read = fstream.Reader(filepath);
-	var	ency = crypto.createCipheriv('aes-256-ctr', key, IV);
+	var	ency = crypto.createCipheriv('aes-256-ctr', pubkey, IV);
 	// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 	var	writer = fstream.Writer(protected+filename+".enc");
 	read.pipe(ency).pipe(writer);
@@ -67,11 +67,11 @@ router.post("/downloadData", function(req, res, next) {
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
-				var key = new Buffer(contents, 'binary');//length=30
+				pubkey = new Buffer(contents, 'binary');//length=30
 			});
 			
 			var read = fstream.Reader(downloadFile);
-			var	dency = crypto.createDecipheriv('aes-256-ctr', key, IV);
+			var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
 			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
 			var	writer = fstream.Writer(downloadFile);
 			read.pipe(dency).pipe(writer);
