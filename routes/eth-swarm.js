@@ -117,10 +117,11 @@ router.post("/generateCrypto", function(req, res, next){
 	mkdirp(dirpath, function(err) {
 		if(!err){
 			const exec = require('child_process').exec;
-			var keygen = exec('openssl enc -aes-256-cbc -k secret -P -md sha1',
+			var pubkey = exec('openssl enc -aes-256-cbc -k secret -P -md sha1',
 			        (error, stdout, stderr) => {
 			        	output = stdout.split("\n");
 			        	key = output[1].split("=");
+			        	return key[1];
 			        });
 			// var prime_length = 256;
 			// var diffHell = crypto.createDiffieHellman(prime_length);
@@ -128,7 +129,7 @@ router.post("/generateCrypto", function(req, res, next){
 			// diffHell.generateKeys('hex');
 			// var key = diffHell.getPublicKey('hex');
 
-			fs.writeFile(filepath, key[1], function(err) {
+			fs.writeFile(filepath, pubkey, function(err) {
 			    if(err) {
 			        console.log(err);
 			    }
