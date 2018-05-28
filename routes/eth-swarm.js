@@ -61,7 +61,7 @@ router.post("/downloadData", function(req, res, next) {
 	// var file = fs.createWriteStream(downloadFile);
 	var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
 		// response.pipe(file);
-		var fileData = new Buffer(response);
+		var fileData = new Buffer(response.toString());
 		var IV = new Buffer(req.body.password, 'hex');
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
