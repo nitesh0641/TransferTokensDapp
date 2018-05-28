@@ -41,11 +41,11 @@ router.post("/download", function(req, res, next) {
 	// fs.writeFile(downloadFile, '', (err) => {  
 	// 	if (err) throw err;
 	// });
-	swarm.download(fileHash, downloadFile)
-	.then(function(path){
-		// console.log("Downloaded file:", swarm.toString(array));
+	swarm.download(fileHash)
+	.then(function(data){
+		console.log("Downloaded file:", swarm.toString(data));
 		// var file = fs.createWriteStream(downloadFile);
-		res.json({"success": "file downloaded at "+path});
+		res.json({"success": "file downloaded at "});
 	});
 });
 
