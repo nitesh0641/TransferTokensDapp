@@ -56,6 +56,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var user = req.body.username;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
+	var timeStamp = Math.floor(Date.now() / 1000);
 
 	// var forIV = "nc$"+crypto.randomBytes(15);
 	var forIV = "nc$"+randomstring.generate(13);
@@ -71,7 +72,7 @@ router.post("/uploadFile", function(req, res, next) {
 			// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 			// var	writer = fstream.Writer(protected+filename+".enc");
 			// read.pipe(ency).pipe(writer);
-			fs.writeFile(protected+filename+".enc", encryptdata, function (err) {
+			fs.writeFile(protected+filename+"_"+timeStamp+".enc", encryptdata, function (err) {
 				if (!err){
 					setTimeout(function() {
 					    swarm.upload({path: protected+filename+".enc", kind: "file"})
