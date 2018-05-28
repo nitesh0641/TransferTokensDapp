@@ -38,14 +38,14 @@ router.post("/download", function(req, res, next) {
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 	var downloadFile = downloadpath+"/"+user+"."+type;
 
-	swarm.download(fileHash)
-	.then(function(array){
-		console.log("Downloaded file:", swarm.toString(array));
+	fs.writeFile(downloadFile, '', (err) => {  
+		if (err) throw err;
+	});
+	swarm.download(fileHash, downloadFile)
+	.then(function(path){
+		// console.log("Downloaded file:", swarm.toString(array));
 		// var file = fs.createWriteStream(downloadFile);
-		fs.writeFile(downloadFile, array, (err) => {  
-			if (err) throw err;
-			res.json({"success": "file downloaded at "+downloadFile});
-		});
+		res.json({"success": "file downloaded at "+path});
 	});
 });
 
