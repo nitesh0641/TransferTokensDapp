@@ -98,7 +98,14 @@ router.post("/downloadData", function(req, res, next) {
 			var cipher_blob = IV.toString().split("$");
 			if(cipher_blob[0] == 'nc'){
 				fs.readFile(downloadFile, 'utf8', function(err, contents) {
-					console.log(contents);
+					fs.readFile(pubkey, 'utf8', function(err, key) {
+						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
+							decoded = dency.update(contents, 'binary', 'utf8');
+							decoded += dency.final('utf8');
+						var	writer = fstream.Writer(downloadFile);
+							decoded.pipe(writer);
+						res.json({"success": downloadFile});
+					});			
 				});
 			}
 			else{
