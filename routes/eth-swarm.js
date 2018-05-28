@@ -17,6 +17,36 @@ var encrypt = require('../modules/encrypt');
 
 var web3Message = '';
 
+router.post("/upload", function(req, res, next) {
+	var filename = req.body.filename;
+	var filepath = req.body.filepath;
+	var user = req.body.username;
+
+	swarm.upload({path: filepath, kind: "file"})
+	.then(function(hash){
+		res.json({"hash": hash});
+	})
+	.catch(console.log);
+
+});
+
+router.post("/download", function(req, res, next) {
+	var fileHash = req.body.hash;
+	var user = req.body.username;
+	var pass = req.body.password;
+	var type = req.body.type;
+	var downloadpath = '/var/www/TransferTokensDapp/downloads';
+	var downloadFile = downloadpath+"/"+user+"."+type;
+
+	swarm.download(fileHash)
+	.then(function(array){
+	  console.log("Downloaded file:", swarm.toString(array));
+	  var file = fs.createWriteStream(downloadFile);
+	  swarm.toString(array).pipe(file);
+	  res.json({"success": "file downloaded at "+downloadFile});
+	});
+});
+
 router.post("/uploadFile", function(req, res, next) {
 	var filename = req.body.filename;
 	var filepath = req.body.filepath;
