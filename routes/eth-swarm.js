@@ -22,8 +22,6 @@ router.post("/upload", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var user = req.body.username;
 
-	console.log(filename+' -- '+filepath+' -- '+user);
-
 	swarm.upload({path: filepath, kind: "file"})
 	.then(function(hash){
 		res.json({"hash": hash});
@@ -96,35 +94,44 @@ router.post("/downloadData", function(req, res, next) {
 
 	exec(curlCommand, function (error, stdout, stderr){
 		if (error == null) {
-			res.json({"Success": "File Downloaded."});
-		}
-		else{
-			res.json({"Failure": "Problem in File Download."});
-		}
-	});
-
-	// var file = fs.createWriteStream(downloadFile);
-	var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
-		// response.pipe(file);
-		var fileData = new Buffer(response.toString());
-		var IV = new Buffer(req.body.password, 'hex');
-		var cipher_blob = IV.toString().split("$");
-		if(cipher_blob[0] == 'nc'){
-			fs.readFile(pubkey, 'utf8', function(err, contents) {
-				// var read = fstream.Reader(downloadFile);
-				var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
-					decoded = dency.update(fileData, 'binary', 'utf8');
-					decoded += dency.final('utf8');
-				// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-				var	writer = fstream.Writer(downloadFile);
-				decoded.pipe(writer);
-				res.json({"success": downloadFile});
-				// res.json({"success": downloadData});
-			});			
+			var IV = new Buffer(req.body.password, 'hex');
+			var cipher_blob = IV.toString().split("$");
+			if(cipher_blob[0] == 'nc'){
+				fs.readFile(downloadFile, 'utf8', function(err, contents) {
+					console.log(contents);
+				});
+			}
+			else{
+				res.status(500).json({"failure": "There was some problem. Please try again later."});
+			}
 		}
 		else{
 			res.status(500).json({"failure": "There was some problem. Please try again later."});
 		}
+	});
+
+	// // var file = fs.createWriteStream(downloadFile);
+	// var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
+	// 	// response.pipe(file);
+	// 	var fileData = new Buffer(response.toString());
+	// 	var IV = new Buffer(req.body.password, 'hex');
+	// 	var cipher_blob = IV.toString().split("$");
+	// 	if(cipher_blob[0] == 'nc'){
+	// 		fs.readFile(pubkey, 'utf8', function(err, contents) {
+	// 			// var read = fstream.Reader(downloadFile);
+	// 			var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
+	// 				decoded = dency.update(fileData, 'binary', 'utf8');
+	// 				decoded += dency.final('utf8');
+	// 			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
+	// 			var	writer = fstream.Writer(downloadFile);
+	// 			decoded.pipe(writer);
+	// 			res.json({"success": downloadFile});
+	// 			// res.json({"success": downloadData});
+	// 		});			
+	// 	}
+	// 	else{
+	// 		res.status(500).json({"failure": "There was some problem. Please try again later."});
+	// 	}
 	});
 
 	// swarm.download(fileHash, downloadpath)
