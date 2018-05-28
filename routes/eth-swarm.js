@@ -66,8 +66,8 @@ router.post("/uploadFile", function(req, res, next) {
 		// var read = fstream.Reader(filepath);
 		fs.readFile(filepath, 'utf8', function(err, fileData) {
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'base64');
-			encryptdata += ency.final('binary');
+			var encryptdata = ency.update(fileData);
+			encryptdata += ency.final();
 			// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 			// var	writer = fstream.Writer(protected+filename+".enc");
 			// read.pipe(ency).pipe(writer);
@@ -107,8 +107,8 @@ router.post("/downloadData", function(req, res, next) {
 				fs.readFile(downloadFile, 'utf8', function(err, contents) {
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents, 'base64', 'utf8');
-							decoded += dency.final('utf8');
+							decoded = dency.update(contents);
+							decoded += dency.final();
 						// var	writer = fstream.Writer(downloadFile);
 						fs.writeFile(downloadFile, decoded, function (err) {
 							res.json({"success": downloadFile});
