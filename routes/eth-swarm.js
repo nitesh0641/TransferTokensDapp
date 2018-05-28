@@ -60,6 +60,7 @@ router.post("/downloadData", function(req, res, next) {
 
 	var file = fs.createWriteStream(downloadFile);
 	var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
+		console.log("1st reponse => "+response);
 		response.pipe(file);
 		var IV = new Buffer(req.body.password, 'hex');
 		var cipher_blob = IV.toString().split("$");
@@ -67,7 +68,6 @@ router.post("/downloadData", function(req, res, next) {
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
 				// var read = fstream.Reader(downloadFile);
 				fs.readFile(downloadFile, 'utf-8', function(err, fileData){
-					console.log("here is the content => "+fileData);
 					var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
 					decoded = dency.update(fileData, 'binary', 'utf8');
 					decoded += dency.final('utf8');
