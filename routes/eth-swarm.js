@@ -65,7 +65,10 @@ router.post("/downloadData", function(req, res, next) {
 		var cipher_blob = IV.toString().split("$");
 		if(cipher_blob[0] == 'nc'){
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
-				var read = fstream.Reader(downloadFile);
+				// var read = fstream.Reader(downloadFile);
+				var read = fs.readFile(downloadFile, 'utf-8', function(err, fileData){
+					return fileData;
+				});
 				console.log(read);
 				var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
 				decoded = dency.update(read, 'binary', 'utf8');
