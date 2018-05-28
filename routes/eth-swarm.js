@@ -65,11 +65,9 @@ router.post("/uploadFile", function(req, res, next) {
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		var read = fstream.Reader(filepath);
 		var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-		var encryptdata = ency.update(cleardata, 'utf8', 'binary');
-		encryptdata += ency.final('binary');
 		// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 		var	writer = fstream.Writer(protected+filename+".enc");
-		read.pipe(encryptdata).pipe(writer);
+		read.pipe(ency).pipe(writer);
 		
 		setTimeout(function() {
 		    swarm.upload({path: protected+filename+".enc", kind: "file"})
