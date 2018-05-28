@@ -67,7 +67,7 @@ router.post("/downloadData", function(req, res, next) {
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
 				// var read = fstream.Reader(downloadFile);
 				fs.readFile(downloadFile, 'utf-8', function(err, fileData){
-					console.log(fileData);
+					console.log("here is the content => "+fileData);
 					var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
 					decoded = dency.update(fileData, 'binary', 'utf8');
 					decoded += dency.final('utf8');
