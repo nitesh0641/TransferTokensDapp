@@ -41,7 +41,7 @@ router.post("/download", function(req, res, next) {
 	// fs.writeFile(downloadFile, '', (err) => {  
 	// 	if (err) throw err;
 	// });
-	swarm.download(fileHash)
+	swarm.download(fileHash, downloadpath)
 	.then(function(data){
 		console.log("Downloaded file:", swarm.toString(data));
 		// var file = fs.createWriteStream(downloadFile);
