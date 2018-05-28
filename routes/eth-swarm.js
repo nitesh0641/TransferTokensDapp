@@ -69,17 +69,20 @@ router.post("/uploadFile", function(req, res, next) {
 			var encryptdata = ency.update(fileData, 'utf8', 'binary');
 			encryptdata += ency.final('binary');
 			// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
-			var	writer = fstream.Writer(protected+filename+".enc");
-			encryptdata.pipe(writer);
-			
-			setTimeout(function() {
-			    swarm.upload({path: protected+filename+".enc", kind: "file"})
-				.then(function(hash){
-					web3Message = {"hash":hash,"pass":IV.toString("hex")}
-					res.json({"hash": web3Message});
-				})
-				.catch(console.log);
-			}, 500);
+			// var	writer = fstream.Writer(protected+filename+".enc");
+			// read.pipe(ency).pipe(writer);
+			fs.writeFile(protected+filename+".enc", encryptdata, function (err) {
+				if (!err){
+					setTimeout(function() {
+					    swarm.upload({path: protected+filename+".enc", kind: "file"})
+						.then(function(hash){
+							web3Message = {"hash":hash,"pass":IV.toString("hex")}
+							res.json({"hash": web3Message});
+						})
+						.catch(console.log);
+					}, 500);
+				}
+			});
 		});
 	});
 	
