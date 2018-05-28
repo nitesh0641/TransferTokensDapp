@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var path = require('path');
 var fs = require('fs');
 var fstream = require('fstream');
-const exec = require('child_process').exec;
+const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 var http = require('http');
@@ -37,8 +37,9 @@ router.post("/download", function(req, res, next) {
 	var type = req.body.type;
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 	var downloadFile = downloadpath+"/"+user+"."+type;
+	var curlCommand = 'curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+downloadFile;
 
-	exec('curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+user+'.'+type, function (error, stdout, stderr){
+	exec(curlCommand, function (error, stdout, stderr){
 		if (error == null) {
 			res.json({"Success": "File Downloaded."});
 		}
