@@ -64,7 +64,7 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// var read = fstream.Reader(filepath);
-		fs.reasFile(filepath, 'utf8', function(err, fileData) {
+		fs.readFile(filepath, 'utf8', function(err, fileData) {
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
 			var encryptdata = ency.update(fileData, 'utf8', 'binary');
 			encryptdata += ency.final('binary');
