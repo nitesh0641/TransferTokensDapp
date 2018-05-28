@@ -22,6 +22,8 @@ router.post("/upload", function(req, res, next) {
 	var filepath = req.body.filepath;
 	var user = req.body.username;
 
+	console.log(filename+' -- '+filepath+' -- '+user);
+
 	swarm.upload({path: filepath, kind: "file"})
 	.then(function(hash){
 		res.json({"hash": hash});
@@ -90,6 +92,16 @@ router.post("/downloadData", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 	var downloadFile = downloadpath+"/"+user+"."+type;
+	var curlCommand = 'curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+downloadFile;
+
+	exec(curlCommand, function (error, stdout, stderr){
+		if (error == null) {
+			res.json({"Success": "File Downloaded."});
+		}
+		else{
+			res.json({"Failure": "Problem in File Download."});
+		}
+	});
 
 	// var file = fs.createWriteStream(downloadFile);
 	var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
