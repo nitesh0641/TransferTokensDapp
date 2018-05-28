@@ -96,7 +96,8 @@ router.post("/downloadData", function(req, res, next) {
 	var type = req.body.type;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
-	var downloadFile = downloadpath+"/"+user+"."+type;
+	var timeStamp = Math.floor(Date.now() / 1000);
+	var downloadFile = downloadpath+"/"+user+"_"+timeStamp+"."+type;
 	var curlCommand = 'curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+downloadFile;
 
 	exec(curlCommand, function (error, stdout, stderr){
