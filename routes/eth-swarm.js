@@ -66,10 +66,12 @@ router.post("/downloadData", function(req, res, next) {
 		if(cipher_blob[0] == 'nc'){
 			fs.readFile(pubkey, 'utf8', function(err, contents) {
 				var read = fstream.Reader(downloadFile);
-				var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV);
+				var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
+				decoded = dency.update(read, 'binary', 'utf8');
+				decoded += dency.final('utf8');
 				// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
 				var	writer = fstream.Writer(downloadFile);
-				read.pipe(dency).pipe(writer);
+				decoded.pipe(writer);
 				res.json({"success": downloadFile});
 				// res.json({"success": downloadData});
 			});			
