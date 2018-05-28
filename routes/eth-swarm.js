@@ -63,12 +63,12 @@ router.post("/uploadFile", function(req, res, next) {
 	var IV = new Buffer(forIV);
 	// var IV = new Buffer("nc$1238*6089alch");
 
-	fs.readFile(pubkey, 'utf8', function(err, contents) {
+	fs.readFile(pubkey, 'utf-8', function(err, contents) {
 		// var read = fstream.Reader(filepath);
-		fs.readFile(filepath, 'utf8', function(err, fileData) {
+		fs.readFile(filepath, 'utf-8', function(err, fileData) {
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'binary');
-			encryptdata += ency.final('binary');
+			var encryptdata = ency.update(fileData, 'utf-8', 'hex');
+			encryptdata += ency.final('hex');
 			// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
 			// var	writer = fstream.Writer(protected+filename+".enc");
 			// read.pipe(ency).pipe(writer);
@@ -106,11 +106,11 @@ router.post("/downloadData", function(req, res, next) {
 			var IV = new Buffer(req.body.password, 'hex');
 			var cipher_blob = IV.toString().split("$");
 			if(cipher_blob[0] == 'nc'){
-				fs.readFile(downloadFile, 'utf8', function(err, contents) {
-					fs.readFile(pubkey, 'utf8', function(err, key) {
+				fs.readFile(downloadFile, 'utf-8', function(err, contents) {
+					fs.readFile(pubkey, 'utf-8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents, 'binary', 'utf8');
-							decoded += dency.final('utf8');
+							decoded = dency.update(contents, 'hex', 'utf-8');
+							decoded += dency.final('utf-8');
 						// var	writer = fstream.Writer(downloadFile);
 						fs.writeFile(downloadFile, decoded, function (err) {
 							res.json({"success": downloadFile});
