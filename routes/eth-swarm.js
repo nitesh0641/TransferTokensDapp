@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var path = require('path');
 var fs = require('fs');
 var fstream = require('fstream');
-const { exec } = require('child_process');
+const exec = require('child_process').exec, child;
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 var http = require('http');
@@ -38,15 +38,15 @@ router.post("/download", function(req, res, next) {
 	var downloadpath = '/var/www/TransferTokensDapp/downloads';
 	var downloadFile = downloadpath+"/"+user+"."+type;
 
-	// fs.writeFile(downloadFile, '', (err) => {  
-	// 	if (err) throw err;
-	// });
-	swarm.downloadBinary(fileHash, downloadpath)
-	.then(function(data){
-		console.log("Downloaded file:", swarm.toString(data));
-		// var file = fs.createWriteStream(downloadFile);
-		res.json({"success": "file downloaded at "});
+	exec('curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+user+'.'+type, function (error, stdout, stderr){
+		if (error == null) {
+			res.json({"Success": "File Downloaded."});
+		}
+		else{
+			res.json({"Failure": "Problem in File Download."});
+		}
 	});
+
 });
 
 router.post("/uploadFile", function(req, res, next) {
