@@ -132,7 +132,7 @@ router.post("/downloadData", function(req, res, next) {
 	// 	else{
 	// 		res.status(500).json({"failure": "There was some problem. Please try again later."});
 	// 	}
-	});
+	// });
 
 	// swarm.download(fileHash, downloadpath)
 	// .then(function(downloadData){
