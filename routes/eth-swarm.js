@@ -70,7 +70,7 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// Read file to upload --
-		fs.readFile(filepath, 'utf8', function(err, fileRaw) {
+		fs.readFile(filepath, function(err, fileRaw) {
 			// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
 			// 	console.log(err);
 			// });
