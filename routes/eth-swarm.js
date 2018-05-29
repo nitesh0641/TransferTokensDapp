@@ -123,7 +123,7 @@ router.post("/downloadData", function(req, res, next) {
 							decoded = dency.update(contents, 'hex', 'ascii');
 							decoded += dency.final('ascii');
 						var filedata = new Buffer(decoded, 'base64');
-						filedata = filedata.toString('utf8');
+						filedata = filedata.toString();
 						// var	writer = fstream.Writer(downloadFile);
 						fs.writeFile(downloadFile, filedata, function (err) {
 							res.json({"success": downloadFile});
