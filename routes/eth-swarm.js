@@ -69,7 +69,7 @@ router.post("/uploadFile", function(req, res, next) {
 	// var IV = new Buffer("nc$1238*6089alch");
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
-		// var read = fstream.Reader(filepath);
+		// Read file to upload --
 		fs.readFile(filepath, 'base64', function(err, fileRaw) {
 			fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
 				console.log(err);
@@ -113,6 +113,7 @@ router.post("/downloadData", function(req, res, next) {
 			var IV = new Buffer(req.body.password, 'hex');
 			var cipher_blob = IV.toString().split("$");
 			if(cipher_blob[0] == 'nc'){
+				// Read file to download --
 				fs.readFile(downloadFile, 'base64', function(err, contents) {
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
