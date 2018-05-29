@@ -120,8 +120,8 @@ router.post("/downloadData", function(req, res, next) {
 					// });
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents, 'hex', 'utf8');
-							decoded += dency.final('utf8');
+							decoded = dency.update(contents, 'hex', 'ascii');
+							decoded += dency.final('ascii');
 						var filedata = new Buffer(decoded, 'base64');
 						filedata = filedata.toString('utf8');
 						// var	writer = fstream.Writer(downloadFile);
