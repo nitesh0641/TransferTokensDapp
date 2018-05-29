@@ -70,11 +70,11 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// var read = fstream.Reader(filepath);
-		fs.readFile(filepath, 'utf8', function(err, fileRaw) {
+		fs.readFile(filepath, 'utf16le', function(err, fileRaw) {
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'latin1', 'hex');
+			var encryptdata = ency.update(fileData, 'utf16le', 'hex');
 			encryptdata += ency.final('hex');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
@@ -110,11 +110,11 @@ router.post("/downloadData", function(req, res, next) {
 			var IV = new Buffer(req.body.password, 'hex');
 			var cipher_blob = IV.toString().split("$");
 			if(cipher_blob[0] == 'nc'){
-				fs.readFile(downloadFile, 'utf8', function(err, contents) {
+				fs.readFile(downloadFile, 'utf16le', function(err, contents) {
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents, 'hex', 'latin1');
-							decoded += dency.final('latin1');
+							decoded = dency.update(contents, 'hex', 'utf16le');
+							decoded += dency.final('utf16le');
 						var filedata = new Buffer(decoded, 'base64');
 						filedata = filedata.toString('ascii');
 						// var	writer = fstream.Writer(downloadFile);
