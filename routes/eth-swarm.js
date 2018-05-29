@@ -70,14 +70,14 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// Read file to upload --
-		fs.readFile(filepath, 'utf8', function(err, fileRaw) {
+		fs.readFile(filepath, function(err, fileRaw) {
 			// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
 			// 	console.log(err);
 			// });
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'hex');
+			var encryptdata = ency.update(fileData, 'hex');
 			encryptdata += ency.final('hex');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
