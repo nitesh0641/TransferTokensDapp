@@ -17,6 +17,7 @@ var encrypt = require('../modules/encrypt');
 
 var web3Message = '';
 
+// -- upload/download files without encryption/decryption --
 router.post("/upload", function(req, res, next) {
 	var filename = req.body.filename;
 	var filepath = req.body.filepath;
@@ -50,6 +51,9 @@ router.post("/download", function(req, res, next) {
 
 });
 
+// =========================================================X======================X============================================
+
+// -- upload/download files with encryption/decryption --
 router.post("/uploadFile", function(req, res, next) {
 	var filename = req.body.filename;
 	var filepath = req.body.filepath;
@@ -66,15 +70,12 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// var read = fstream.Reader(filepath);
-		fs.readFile(filepath, 'utf8', function(err, fileRaw) {
+		fs.readFile(filepath, 'ascii', function(err, fileRaw) {
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData);
-			encryptdata += ency.final();
-			// var	ency = crypto.createCipher('aes-128-ccm', pubkey, IV);
-			// var	writer = fstream.Writer(protected+filename+".enc");
-			// read.pipe(ency).pipe(writer);
+			var encryptdata = ency.update(fileData, 'ascii', 'hex');
+			encryptdata += ency.final('hex');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
 					setTimeout(function() {
@@ -109,13 +110,13 @@ router.post("/downloadData", function(req, res, next) {
 			var IV = new Buffer(req.body.password, 'hex');
 			var cipher_blob = IV.toString().split("$");
 			if(cipher_blob[0] == 'nc'){
-				fs.readFile(downloadFile, 'utf8', function(err, contents) {
+				fs.readFile(downloadFile, 'ascii', function(err, contents) {
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents);
-							decoded += dency.final();
+							decoded = dency.update(contents, 'hex', 'ascii');
+							decoded += dency.final('ascii');
 						var filedata = new Buffer(decoded, 'base64');
-						filedata = filedata.toString('ascii');
+						// filedata = filedata.toString('ascii');
 						// var	writer = fstream.Writer(downloadFile);
 						fs.writeFile(downloadFile, filedata, function (err) {
 							res.json({"success": downloadFile});
@@ -131,52 +132,6 @@ router.post("/downloadData", function(req, res, next) {
 			res.status(500).json({"failure": "There was some problem. Please try again later."});
 		}
 	});
-
-	// // var file = fs.createWriteStream(downloadFile);
-	// var request = http.get("http://localhost:8500/bzz:/"+fileHash, function(response) {
-	// 	// response.pipe(file);
-	// 	var fileData = new Buffer(response.toString());
-	// 	var IV = new Buffer(req.body.password, 'hex');
-	// 	var cipher_blob = IV.toString().split("$");
-	// 	if(cipher_blob[0] == 'nc'){
-	// 		fs.readFile(pubkey, 'utf8', function(err, contents) {
-	// 			// var read = fstream.Reader(downloadFile);
-	// 			var	dency = crypto.createDecipheriv('aes-256-cbc', contents.substring(0,32), IV),
-	// 				decoded = dency.update(fileData, 'binary', 'utf8');
-	// 				decoded += dency.final('utf8');
-	// 			// var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-	// 			var	writer = fstream.Writer(downloadFile);
-	// 			decoded.pipe(writer);
-	// 			res.json({"success": downloadFile});
-	// 			// res.json({"success": downloadData});
-	// 		});			
-	// 	}
-	// 	else{
-	// 		res.status(500).json({"failure": "There was some problem. Please try again later."});
-	// 	}
-	// });
-
-	// swarm.download(fileHash, downloadpath)
-	// .then(function(downloadData){
-	// 	// downloadData = swarm.toString(downloadData);
-	// 	var IV = new Buffer(req.body.password, 'hex');
-	// 	var cipher_blob = IV.toString().split("$");
-	// 	if(cipher_blob[0] == 'nc'){
-	// 		// var read = fstream.Reader(downloadData);
-	// 		// var	dency = crypto.createDecipheriv('aes-256-ctr', pubkey, IV);
-	// 		// // var	dency = crypto.createDecipher('aes-128-ccm', pubkey, IV);
-	// 		// var	writer = fstream.Writer(downloadpath+user+type);
-	// 		// read.pipe(dency).pipe(writer);
-	// 		// res.json({"success": downloadpath+user+type});
-	// 		res.json({"success": downloadData});
-	// 	}
-	// 	else{
-	// 		res.status(500).json({"failure": "There was some problem. Please try again later."});
-	// 	}
-	//   })
-	// .catch(console.log);
-
-	// res.json({"data": web3Message});
 });
 
 router.post("/generateCrypto", function(req, res, next){
@@ -203,26 +158,8 @@ router.post("/generateCrypto", function(req, res, next){
 						    }
 						});
 			        });
-			// var prime_length = 256;
-			// var diffHell = crypto.createDiffieHellman(prime_length);
-
-			// diffHell.generateKeys('hex');
-			// var key = diffHell.getPublicKey('hex');
 		}
 	});
-	// res.json({"message": web3Message});
-});
-
-router.post("/downloadFile", function(req, res, next){
-	var filehash = req.body.filehash;
-	var targetDir = "/var/www/TransferTokensDapp/downloads/nitesh.png";
-
-	swarm.download(filehash, targetDir)
-	.then(function(path){
-	  	res.json({"filepath": path});
-		console.log(`Downloaded DApp to ${path}.`)
-	})
-	.catch(console.log);
 });
 
 // -- encryption using ursa
