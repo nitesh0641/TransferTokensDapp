@@ -61,7 +61,7 @@ router.post("/uploadFile", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var protected = '/var/www/TransferTokensDapp/uploads/protected/';
 	var timeStamp = Math.floor(Date.now() / 1000);
-	var encFile = protected+filename+"_"+timeStamp+".enc";
+	var encFile = protected+timeStamp+"_"+filename+".enc";
 
 	// var forIV = "nc$"+crypto.randomBytes(15);
 	var forIV = "nc$"+randomstring.generate(13);
@@ -77,7 +77,7 @@ router.post("/uploadFile", function(req, res, next) {
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'hex');
+			var encryptdata = ency.update(fileBuff, 'utf8', 'hex');
 			encryptdata += ency.final('hex');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
@@ -114,7 +114,10 @@ router.post("/downloadData", function(req, res, next) {
 			var cipher_blob = IV.toString().split("$");
 			if(cipher_blob[0] == 'nc'){
 				// Read file to download --
-				fs.readFile(downloadFile, 'base64', function(err, contents) {
+				fs.readFile(downloadFile, 'utf8', function(err, contents) {
+					fs.writeFile(protected+"down_nitesh_"+timeStamp+".enc", contents, function (err) {
+						console.log(err);
+					});
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
 							decoded = dency.update(contents, 'hex', 'utf8');
