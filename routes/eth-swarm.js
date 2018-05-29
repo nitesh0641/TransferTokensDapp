@@ -77,8 +77,8 @@ router.post("/uploadFile", function(req, res, next) {
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'ascii', 'hex');
-			encryptdata += ency.final('hex');
+			var encryptdata = ency.update(fileData, 'ascii', 'base64');
+			encryptdata += ency.final('base64');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
 					setTimeout(function() {
@@ -120,7 +120,7 @@ router.post("/downloadData", function(req, res, next) {
 					// });
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents, 'hex', 'ascii');
+							decoded = dency.update(contents, 'base64', 'ascii');
 							decoded += dency.final('ascii');
 						var filedata = new Buffer(decoded, 'base64');
 						filedata = filedata.toString();
