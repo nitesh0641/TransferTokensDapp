@@ -70,7 +70,7 @@ router.post("/uploadFile", function(req, res, next) {
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// Read file to upload --
-		fs.readFile(filepath, function(err, fileRaw) {
+		fs.readFile(filepath, 'utf8', function(err, fileRaw) {
 			// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
 			// 	console.log(err);
 			// });
@@ -123,7 +123,7 @@ router.post("/downloadData", function(req, res, next) {
 							decoded = dency.update(contents, 'hex', 'utf8');
 							decoded += dency.final('utf8');
 						var filedata = new Buffer(decoded, 'base64');
-						filedata = filedata.toString('binary');
+						filedata = filedata.toString();
 						// var	writer = fstream.Writer(downloadFile);
 						fs.writeFile(downloadFile, filedata, function (err) {
 							res.json({"success": downloadFile});
