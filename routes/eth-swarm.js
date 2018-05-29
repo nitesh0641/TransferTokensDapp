@@ -115,7 +115,7 @@ router.post("/downloadData", function(req, res, next) {
 			if(cipher_blob[0] == 'nc'){
 				// Read file to download --
 				fs.readFile(downloadFile, 'utf8', function(err, contents) {
-					fs.writeFile(protected+"down_nitesh_"+timeStamp+".enc", contents, function (err) {
+					fs.writeFile(downloadpath+"/down_nitesh_"+timeStamp+".enc", contents, function (err) {
 						console.log(err);
 					});
 					fs.readFile(pubkey, 'utf8', function(err, key) {
