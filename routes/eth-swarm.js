@@ -71,16 +71,14 @@ router.post("/uploadFile", function(req, res, next) {
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// var read = fstream.Reader(filepath);
 		fs.readFile(filepath, function(err, fileRaw) {
-
-			fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
-				console.log(err);
-			});
-
+			// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
+			// 	console.log(err);
+			// });
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'hex');
-			encryptdata += ency.final('hex');
+			var encryptdata = ency.update(fileData, 'utf8', 'binary');
+			encryptdata += ency.final('binary');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
 					setTimeout(function() {
@@ -118,7 +116,7 @@ router.post("/downloadData", function(req, res, next) {
 				fs.readFile(downloadFile, function(err, contents) {
 					fs.readFile(pubkey, 'utf8', function(err, key) {
 						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV),
-							decoded = dency.update(contents, 'hex', 'utf8');
+							decoded = dency.update(contents, 'binary', 'utf8');
 							decoded += dency.final('utf8');
 						var filedata = new Buffer(decoded, 'base64');
 						filedata = filedata.toString('ascii');
