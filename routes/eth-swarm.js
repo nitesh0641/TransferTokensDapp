@@ -9,6 +9,7 @@ const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 var http = require('http');
+var Zip = require('node-zip');
 
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
@@ -16,12 +17,17 @@ const swarm = require("swarm-js").at("http://127.0.0.1:8500");
 var encrypt = require('../modules/encrypt');
 
 var web3Message = '';
+var zip = new Zip();
 
 // -- upload/download files without encryption/decryption --
 router.post("/upload", function(req, res, next) {
 	var filename = req.body.filename;
 	var filepath = req.body.filepath;
 	var user = req.body.username;
+
+	zip.file('test.file', 'hello there');
+	var data = zip.generate({base64:false,compression:'DEFLATE'});
+	console.log(data); // ugly data
 
 	swarm.upload({path: filepath, kind: "file"})
 	.then(function(hash){
