@@ -77,8 +77,8 @@ router.post("/uploadFile", function(req, res, next) {
 			fileBuff = new Buffer(fileRaw),
 			fileData = fileBuff.toString('base64');
 			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encrypted = [ency.update(fileData)];
-    		encrypted.push(ency.final());
+			var encryptdata = [ency.update(fileData)];
+    		encryptdata.push(ency.final());
 			// var encryptdata = ency.update(fileData, 'utf8', 'hex');
 			// encryptdata += ency.final('hex');
 			fs.writeFile(encFile, encryptdata, function (err) {
