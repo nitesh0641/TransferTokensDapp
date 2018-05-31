@@ -10,7 +10,7 @@ var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 var http = require('http');
 let PDFParser = require("pdf2json");
-let pdfParser = new PDFParser();
+let pdfParser = new PDFParser(this,1);
 
 // import local modules..
 var admin = require('../modules/admin');
@@ -79,23 +79,23 @@ router.post("/uploadFile", function(req, res, next) {
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError) );
 	    pdfParser.on("pdfParser_dataReady", pdfData => {
-	        fs.writeFile("./F1040EZ.json", JSON.stringify(pdfData));
-	        var fileBuff = new Buffer(JSON.stringify(pdfData));
-	        var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileBuff, 'utf8', 'hex');
-			encryptdata += ency.final('hex');
-			fs.writeFile(encFile, encryptdata, function (err) {
-				if (!err){
-					setTimeout(function() {
-					    swarm.upload({path: encFile, kind: "file"})
-						.then(function(hash){
-							web3Message = {"hash":hash,"pass":IV.toString("hex")}
-							res.json({"hash": web3Message});
-						})
-						.catch(console.log);
-					}, 500);
-				}
-			});
+	        fs.writeFile("./F1040EZ.json", pdfParser.getRawTextContent());
+	  //       var fileBuff = new Buffer(JSON.stringify(pdfData));
+	  //       var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
+			// var encryptdata = ency.update(fileBuff, 'utf8', 'hex');
+			// encryptdata += ency.final('hex');
+			// fs.writeFile(encFile, encryptdata, function (err) {
+			// 	if (!err){
+			// 		setTimeout(function() {
+			// 		    swarm.upload({path: encFile, kind: "file"})
+			// 			.then(function(hash){
+			// 				web3Message = {"hash":hash,"pass":IV.toString("hex")}
+			// 				res.json({"hash": web3Message});
+			// 			})
+			// 			.catch(console.log);
+			// 		}, 500);
+			// 	}
+			// });
 	    });
 
 	    pdfParser.loadPDF(filepath);
