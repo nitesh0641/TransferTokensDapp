@@ -131,7 +131,7 @@ router.post("/downloadData", function(req, res, next) {
 						var filedata = new Buffer(decoded, 'base64');
 						filedata = filedata.toString('utf8');
 						// var	writer = fstream.Writer(downloadFile);
-						fs.writeFile(downloadFile, filedata, function (err) {
+						fs.writeFile(downloadFile, filedata, 'binary', function (err) {
 							res.json({"success": downloadFile});
 						});
 					});			
