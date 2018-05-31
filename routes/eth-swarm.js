@@ -109,7 +109,9 @@ router.post("/downloadData", function(req, res, next) {
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
 	var downloadpath = '/var/www/block.com/assets';
 	var timeStamp = Math.floor(Date.now() / 1000);
-	var downloadFile = downloadpath+"/"+user+"_"+timeStamp+"."+type;
+	var filename = user+"_"+timeStamp+"."+type;
+	var downloadFile = downloadpath+"/"+filename;
+	var downloadFileUrl = 'http://192.168.1.67:8081/assets/'+filename;
 	var curlCommand = 'curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+downloadFile;
 
 	exec(curlCommand, function (error, stdout, stderr){
@@ -130,7 +132,7 @@ router.post("/downloadData", function(req, res, next) {
 						filedata = filedata.toString('utf8');
 						// var	writer = fstream.Writer(downloadFile);
 						fs.writeFile(downloadFile, filedata, 'binary', function (err) {
-							res.json({"success": downloadFile});
+							res.json({"success": downloadFileUrl});
 						});
 					});			
 				});
@@ -176,7 +178,7 @@ router.post("/generateCrypto", function(req, res, next){
 router.post("/removeOld", function(req, res, next) {
 	var filepath = req.body.filepath;
 
-	
+
 });
 
 // -- encryption using ursa
