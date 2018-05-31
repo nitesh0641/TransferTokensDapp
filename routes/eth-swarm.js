@@ -79,7 +79,8 @@ router.post("/uploadFile", function(req, res, next) {
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError) );
 	    pdfParser.on("pdfParser_dataReady", pdfData => {
-	        fs.writeFile("./F1040EZ.json", pdfParser.getRawTextContent());
+	        fs.writeFile("./F1040EZ.json", pdfParser.getAllFieldsTypes());
+	        res.json({"hash": web3Message});
 	  //       var fileBuff = new Buffer(JSON.stringify(pdfData));
 	  //       var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
 			// var encryptdata = ency.update(fileBuff, 'utf8', 'hex');
