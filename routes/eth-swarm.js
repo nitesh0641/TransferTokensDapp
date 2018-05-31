@@ -80,7 +80,7 @@ router.post("/uploadFile", function(req, res, next) {
 		pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError) );
 	    pdfParser.on("pdfParser_dataReady", pdfData => {
 	        // fs.writeFile("./pdf2json/test/F1040EZ.json", JSON.stringify(pdfData));
-	        var fileBuff = new Buffer(JSON.stringify(pdfData)),
+	        var fileBuff = new Buffer(JSON.stringify(pdfData));
 	        var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
 			var encryptdata = ency.update(fileBuff, 'utf8', 'hex');
 			encryptdata += ency.final('hex');
@@ -97,7 +97,7 @@ router.post("/uploadFile", function(req, res, next) {
 				}
 			});
 	    });
-	    
+
 	    pdfParser.loadPDF(filepath);
 	});
 
