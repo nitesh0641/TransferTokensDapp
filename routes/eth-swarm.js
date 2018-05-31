@@ -9,8 +9,10 @@ const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 var http = require('http');
-// var Zip = require('node-zip');
+let PDFParser = require("pdf2json");
+let pdfParser = new PDFParser();
 
+// import local modules..
 var admin = require('../modules/admin');
 var tokens = require('../modules/tools');
 const swarm = require("swarm-js").at("http://127.0.0.1:8500");
@@ -75,15 +77,12 @@ router.post("/uploadFile", function(req, res, next) {
 	// var IV = new Buffer("nc$1238*6089alch");
 
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
-		// Read file to upload --
-		fs.readFile(filepath, function(err, fileRaw) {
-			// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
-			// 	console.log(err);
-			// });
-			fileBuff = new Buffer(fileRaw),
-			fileData = fileBuff.toString('base64');
-			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'hex');
+		pdfParser.on("pdfParser_dataError", errData => console.error(errData.parserError) );
+	    pdfParser.on("pdfParser_dataReady", pdfData => {
+	        // fs.writeFile("./pdf2json/test/F1040EZ.json", JSON.stringify(pdfData));
+	        var fileBuff = new Buffer(JSON.stringify(pdfData)),
+	        var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
+			var encryptdata = ency.update(fileBuff, 'utf8', 'hex');
 			encryptdata += ency.final('hex');
 			fs.writeFile(encFile, encryptdata, function (err) {
 				if (!err){
@@ -97,10 +96,38 @@ router.post("/uploadFile", function(req, res, next) {
 					}, 500);
 				}
 			});
-		});
+	    });
+	    
+	    pdfParser.loadPDF(filepath);
 	});
-	
-	// res.json({"hash": web3Message});
+
+
+	// this is working code... commented for testing another approach..//
+	// fs.readFile(pubkey, 'utf8', function(err, contents) {
+	// 	// Read file to upload --
+	// 	fs.readFile(filepath, function(err, fileRaw) {
+	// 		// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
+	// 		// 	console.log(err);
+	// 		// });
+	// 		fileBuff = new Buffer(fileRaw),
+	// 		fileData = fileBuff.toString('base64');
+	// 		var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
+	// 		var encryptdata = ency.update(fileData, 'utf8', 'hex');
+	// 		encryptdata += ency.final('hex');
+	// 		fs.writeFile(encFile, encryptdata, function (err) {
+	// 			if (!err){
+	// 				setTimeout(function() {
+	// 				    swarm.upload({path: encFile, kind: "file"})
+	// 					.then(function(hash){
+	// 						web3Message = {"hash":hash,"pass":IV.toString("hex")}
+	// 						res.json({"hash": web3Message});
+	// 					})
+	// 					.catch(console.log);
+	// 				}, 500);
+	// 			}
+	// 		});
+	// 	});
+	// });
 });
 
 router.post("/downloadData", function(req, res, next) {
