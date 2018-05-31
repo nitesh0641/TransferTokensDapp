@@ -9,8 +9,6 @@ const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
 var http = require('http');
-let PDFParser = require("pdf2json");
-let pdfParser = new PDFParser(this,1);
 
 // import local modules..
 var admin = require('../modules/admin');
