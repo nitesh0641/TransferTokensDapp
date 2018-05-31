@@ -107,7 +107,7 @@ router.post("/downloadData", function(req, res, next) {
 	var pass = req.body.password;
 	var type = req.body.type;
 	var pubkey = '/var/crypto/'+user+'/pubkey.pem';
-	var downloadpath = '/var/www/TransferTokensDapp/downloads';
+	var downloadpath = '/var/www/block.com/assets';
 	var timeStamp = Math.floor(Date.now() / 1000);
 	var downloadFile = downloadpath+"/"+user+"_"+timeStamp+"."+type;
 	var curlCommand = 'curl http://localhost:8080/bzz:/'+fileHash+'/ --output '+downloadFile;
@@ -171,6 +171,12 @@ router.post("/generateCrypto", function(req, res, next){
 			        });
 		}
 	});
+});
+
+router.post("/removeOld", function(req, res, next) {
+	var filepath = req.body.filepath;
+
+	
 });
 
 // -- encryption using ursa
