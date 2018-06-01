@@ -100,7 +100,7 @@ router.post("/uploadFile", function(req, res, next) {
 				});
 			}
 			catch(err){
-				res.json({
+				res.status(500).json({
 					"status":"500 Internal Server Error",
 					"hash":"",
 					"pass":""
