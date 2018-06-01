@@ -221,10 +221,10 @@ router.post("/isAvailable", function(req, res, next) {
 	var filehash = req.body.filehash;
 
 	var options = {
-	  host: '136.243.38.67',
-	  port: 8080,
+	  host: 'localhost',
+	  port: 8500,
 	  path: '/bzz-list:/'+filehash+"/",
-	  method: 'GET'
+	  method: 'POST'
 	};
 	
 	var rawData = http.request(options, function(response) {
