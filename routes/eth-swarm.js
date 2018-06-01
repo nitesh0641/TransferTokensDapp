@@ -95,7 +95,7 @@ router.post("/uploadFile", function(req, res, next) {
 								"hash":hash,
 								"pass":IV.toString("hex")
 							}
-							res.json({"hash": web3Message});
+							res.json({web3Message});
 						})
 						.catch(console.log);
 					}, 500);
