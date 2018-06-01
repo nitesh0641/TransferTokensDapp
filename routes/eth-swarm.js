@@ -125,7 +125,7 @@ router.post("/downloadData", function(req, res, next) {
 					// 	console.log(err);
 					// });
 					if(err){
-						res.status(204).json({
+						res.json({
 							"status":"204 No Content",
 							"filepath":"",
 							"message": "There was some problem. Please try again later."
@@ -149,7 +149,7 @@ router.post("/downloadData", function(req, res, next) {
 							});
 						}
 						catch(err){
-							res.status(204).json({
+							res.json({
 								"status":"204 No Content",
 								"filepath":"",
 								"message": "There was some problem. Please try again later."
