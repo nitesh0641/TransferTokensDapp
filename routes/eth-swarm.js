@@ -133,19 +133,28 @@ router.post("/downloadData", function(req, res, next) {
 					}
 
 					fs.readFile(pubkey, 'utf8', function(err, key) {
-						var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV);						
-						var	decoded = dency.update(contents, 'hex', 'utf8');
-						decoded += dency.final('utf8');
-						var filedata = new Buffer(decoded, 'base64');
-						filedata = filedata.toString('utf8');
-						// var	writer = fstream.Writer(downloadFile);
-						fs.writeFile(downloadFile, filedata, 'binary', function (err) {
-							res.json({
-								"status":"200 OK",
-								"filepath": downloadFileUrl,
-								"message":"success"
+						try{
+							var	dency = crypto.createDecipheriv('aes-256-cbc', key.substring(0,32), IV);						
+							var	decoded = dency.update(contents, 'hex', 'utf8');
+							decoded += dency.final('utf8');
+							var filedata = new Buffer(decoded, 'base64');
+							filedata = filedata.toString('utf8');
+							// var	writer = fstream.Writer(downloadFile);
+							fs.writeFile(downloadFile, filedata, 'binary', function (err) {
+								res.json({
+									"status":"200 OK",
+									"filepath": downloadFileUrl,
+									"message":"success"
+								});
 							});
-						});
+						}
+						catch(err){
+							res.status(204).json({
+								"status":"204 No Content",
+								"filepath":"",
+								"message": "There was some problem. Please try again later."
+							});
+						}
 					});	
 				});
 			}
