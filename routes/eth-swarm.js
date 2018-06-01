@@ -208,11 +208,12 @@ router.post("/removeOld", function(req, res, next) {
 	    		"message": err
 	    	});
 	    }
-	    res.json({
-    		"status":"200 OK",
-    		"message": "File Deteled."
-    	});
-    	console.log(err);
+	    else{
+	    	res.json({
+	    		"status":"200 OK",
+	    		"message": "File Deteled."
+	    	});
+	    }
 	});
 });
 
