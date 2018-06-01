@@ -239,7 +239,7 @@ router.post("/isAvailable", function(req, res, next) {
 
 	res.json({
 		"status":"200 OK",
-		"message": rawData
+		"message": JSON.stringify(rawData)
 	});
 });
 
