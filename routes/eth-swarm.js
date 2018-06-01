@@ -236,7 +236,7 @@ router.post("/isAvailable", function(req, res, next) {
 	    	console.log('BODY: ' + chunk);
 	  	});
 	});
-	console.log(rawData);
+	
 	res.json({
 		"status":"200 OK",
 		"message": "File Available."
