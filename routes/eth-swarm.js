@@ -226,14 +226,15 @@ router.post("/isAvailable", function(req, res, next) {
 	  path: '/bzz-list:/'+filehash+"/",
 	  method: 'GET'
 	};
-	console.log(options);
+	
 	var rawData = http.request(options, function(response) {
-	  console.log('STATUS: ' + response.statusCode);
-	  console.log('HEADERS: ' + JSON.stringify(response.headers));
-	  response.setEncoding('utf8');
-	  response.on('data', function (chunk) {
-	    console.log('BODY: ' + chunk);
-	  });
+		console.log(response);
+	  	console.log('STATUS: ' + response.statusCode);
+	  	console.log('HEADERS: ' + JSON.stringify(response.headers));
+	  	response.setEncoding('utf8');
+	  	response.on('data', function (chunk) {
+	    	console.log('BODY: ' + chunk);
+	  	});
 	});
 
 	res.json({
