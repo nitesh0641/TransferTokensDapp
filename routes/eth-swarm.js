@@ -8,7 +8,7 @@ var fstream = require('fstream');
 const { exec } = require('child_process');
 var mkdirp = require('mkdirp');
 var randomstring = require("randomstring");
-var http = require('http');
+var request = require('request');
 
 // import local modules..
 var admin = require('../modules/admin');
@@ -227,21 +227,12 @@ router.post("/removeOld", function(req, res, next) {
 router.post("/isAvailable", function(req, res, next) {
 	var filehash = req.body.filehash;
 
-	var options = {
-	  host: 'localhost',
-	  port: 8500,
-	  path: '/bzz-list:/'+filehash+"/",
-	  method: 'POST'
-	};
+	var url = 'http://localhost:8500/bzz-list:/'+filehash+'/';
 	
-	http.request(options, function(response) {
-		console.log(response);
-	  	console.log('STATUS: ' + response.statusCode);
-	  	console.log('HEADERS: ' + JSON.stringify(response.headers));
-	  	response.setEncoding('utf8');
-	  	response.on('data', function (chunk) {
-	    	console.log('BODY: ' + chunk);
-	  	});
+	request(url, function(error, response, body) {
+		if (!error && response.statusCode == 200) {
+			console.log(body) // Show the HTML for the Google homepage.
+		}
 	});
 	
 	res.json({
