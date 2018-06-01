@@ -212,6 +212,7 @@ router.post("/removeOld", function(req, res, next) {
     		"status":"200 OK",
     		"message": "File Deteled."
     	});
+    	console.log(err);
 	});
 });
 
