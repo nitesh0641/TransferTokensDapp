@@ -231,7 +231,8 @@ router.post("/isAvailable", function(req, res, next) {
 	
 	request(url, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
-			console.log(body.entries)
+			var rawData = JSON.parse(body);
+			console.log(rawData.entries);
 		}
 	});
 	
