@@ -227,7 +227,7 @@ router.post("/isAvailable", function(req, res, next) {
 	  method: 'GET'
 	};
 	
-	http.request(options, function(response) {
+	var rawData = http.request(options, function(response) {
 		console.log(response);
 	  	console.log('STATUS: ' + response.statusCode);
 	  	console.log('HEADERS: ' + JSON.stringify(response.headers));
@@ -239,7 +239,7 @@ router.post("/isAvailable", function(req, res, next) {
 
 	res.json({
 		"status":"200 OK",
-		"message": "File Available."
+		"message": rawData
 	});
 });
 
