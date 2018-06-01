@@ -90,12 +90,11 @@ router.post("/uploadFile", function(req, res, next) {
 					setTimeout(function() {
 					    swarm.upload({path: encFile, kind: "file"})
 						.then(function(hash){
-							web3Message = {
+							res.json({
 								"status":"200 OK",
 								"hash":hash,
 								"pass":IV.toString("hex")
-							}
-							res.json({web3Message});
+							});
 						})
 						.catch(console.log);
 					}, 500);
