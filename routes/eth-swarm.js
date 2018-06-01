@@ -201,8 +201,18 @@ router.post("/generateCrypto", function(req, res, next){
 
 router.post("/removeOld", function(req, res, next) {
 	var filepath = req.body.filepath;
-
-
+	fs.unlink(filepath, function (err) {
+	    if (err){
+	    	res.json({
+	    		"status":"500 Internal Server Error",
+	    		"message": err
+	    	});
+	    }
+	    res.json({
+    		"status":"200 OK",
+    		"message": "File Deteled."
+    	});
+	});
 });
 
 // -- encryption using ursa
