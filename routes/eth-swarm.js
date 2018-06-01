@@ -77,29 +77,36 @@ router.post("/uploadFile", function(req, res, next) {
 	fs.readFile(pubkey, 'utf8', function(err, contents) {
 		// Read file to upload --
 		fs.readFile(filepath, 'binary', function(err, fileRaw) {
-			// fs.writeFile(protected+"nitesh_"+timeStamp+".enc", fileRaw, function (err) {
-			// 	console.log(err);
-			// });
-			fileBuff = new Buffer(fileRaw),
-			fileData = fileBuff.toString('base64');
-			var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
-			var encryptdata = ency.update(fileData, 'utf8', 'hex');
-			encryptdata += ency.final('hex');
-			fs.writeFile(encFile, encryptdata, 'binary', function (err) {
-				if (!err){
-					setTimeout(function() {
-					    swarm.upload({path: encFile, kind: "file"})
-						.then(function(hash){
-							res.json({
-								"status":"200 OK",
-								"hash":hash,
-								"pass":IV.toString("hex")
-							});
-						})
-						.catch(console.log);
-					}, 500);
-				}
-			});
+			try{
+				fileBuff = new Buffer(fileRaw),
+				fileData = fileBuff.toString('base64');
+				var	ency = crypto.createCipheriv('aes-256-cbc', contents.substring(0,32), IV);
+				var encryptdata = ency.update(fileData, 'utf8', 'hex');
+				encryptdata += ency.final('hex');
+				fs.writeFile(encFile, encryptdata, 'binary', function (err) {
+					if (!err){
+						setTimeout(function() {
+						    swarm.upload({path: encFile, kind: "file"})
+							.then(function(hash){
+								res.json({
+									"status":"200 OK",
+									"hash":hash,
+									"pass":IV.toString("hex")
+								});
+							})
+							.catch(console.log);
+						}, 500);
+					}
+				});
+			}
+			catch(err){
+				res.json({
+					"status":"500 Internal Server Error",
+					"hash":"",
+					"pass":""
+				});
+			}
+			
 		});
 	});
 });
@@ -227,7 +234,7 @@ router.post("/isAvailable", function(req, res, next) {
 	  method: 'POST'
 	};
 	
-	var rawData = http.request(options, function(response) {
+	http.request(options, function(response) {
 		console.log(response);
 	  	console.log('STATUS: ' + response.statusCode);
 	  	console.log('HEADERS: ' + JSON.stringify(response.headers));
