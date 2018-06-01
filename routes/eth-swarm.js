@@ -227,7 +227,7 @@ router.post("/isAvailable", function(req, res, next) {
 	  method: 'GET'
 	};
 	
-	var rawData = http.request(options, function(response) {
+	http.request(options, function(response) {
 		console.log(response);
 	  	console.log('STATUS: ' + response.statusCode);
 	  	console.log('HEADERS: ' + JSON.stringify(response.headers));
