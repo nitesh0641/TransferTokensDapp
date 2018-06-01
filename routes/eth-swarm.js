@@ -217,6 +217,30 @@ router.post("/removeOld", function(req, res, next) {
 	});
 });
 
+router.post("/isAvailable", function(req, res, next) {
+	var filehash = req.body.filehash;
+
+	var options = {
+	  host: 'localhost',
+	  port: 8500,
+	  path: '/bzz-list:/'+filehash+"/",
+	  method: 'GET'
+	};
+	var rawData = http.request(options, function(response) {
+	  console.log('STATUS: ' + response.statusCode);
+	  console.log('HEADERS: ' + JSON.stringify(response.headers));
+	  response.setEncoding('utf8');
+	  response.on('data', function (chunk) {
+	    console.log('BODY: ' + chunk);
+	  });
+	});
+
+	res.json({
+		"status":"200 OK",
+		"message": "File Available."
+	});
+});
+
 // -- encryption using ursa
 // router.post("/uploadFile", function(req, res, next) {
 // 	var filepath = req.body.filepath;
