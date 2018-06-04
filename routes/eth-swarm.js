@@ -282,7 +282,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 		{
 			var url = 'http://localhost:8500/bzz-list:/'+fileRaw[i]+'/'
 			
-			getRequest(url).then(function (rawData) {
+			getRequest(url).then(function (body) {
 				var rawData = JSON.parse(body);
 				if(rawData.length == 0){
 					notFound.push(fileRaw[i]);
