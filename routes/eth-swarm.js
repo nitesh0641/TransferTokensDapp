@@ -233,7 +233,7 @@ router.post("/isAvailable", function(req, res, next) {
 		if (!error && response.statusCode == 200) {
 			var rawData = JSON.parse(body);
 			// rawData.entries
-			console.log(rawData.entries.hash);
+			console.log(rawData.entries[0].hash);
 		}
 	});
 	
