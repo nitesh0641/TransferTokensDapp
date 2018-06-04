@@ -276,7 +276,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 					}
 				}
 			});
-			if(result.length > 0){
+			if(result.length != 0){
 				notFound.push(fileRaw[i]);
 			}
 		}
@@ -288,7 +288,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 		});
 	}
 
-	// console.log(notFound);
+	console.log(notFound);
 	if(notFound.length != 0){
 		res.json({
 			"status":"200",
