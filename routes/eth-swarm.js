@@ -262,42 +262,43 @@ router.post("/isAvailable", function(req, res, next) {
 router.post("/isAvailable/batch", function(req, res, next) {
 	var filehash = req.body.filehash;
 	var fileRaw = filehash.toString().split(',');
-	console.log("filehash => "+fileRaw[0]+" array length => "+fileRaw.length);
+	var notFound = [];
+	// console.log("filehash => "+fileRaw[0]+" array length => "+fileRaw.length);
 
-	res.json({
-		"status":"204",
-		"message": "File Doesn't Exists."
-	});
-	// var url = 'http://localhost:8500/bzz-list:/'+filehash+'/';
+	try{
+		for(i=0;i<fileRaw.length;i++)
+		{
+			request('http://localhost:8500/bzz-list:/'+fileRaw[i]+'/', function(error, response, body) {
+				if (!error && response.statusCode == 200) {
+					var rawData = JSON.parse(body);
+					if(rawData.length != 0){
+						notFound.push(fileRaw[i]);
+					}
+				}
+			});
+
+		}
+	}
+	catch(err){
+		res.status(500).json({
+			"status":"500",
+			"message": "Try again later."
+		});
+	}
+
+	if(notFound.length > 0){
+		res.json({
+			"status":"204",
+			"filehash":notFound
+		});
+	}
+	else{
+		res.json({
+			"status":"204",
+			"message": "Records not found."
+		});
+	}
 	
-	// try{
-	// 	request(url, function(error, response, body) {
-	// 		if (!error && response.statusCode == 200) {
-	// 			var rawData = JSON.parse(body);
-	// 			if(rawData.length != 0){
-	// 				res.json({
-	// 					"status":"200",
-	// 					"hash": filehash,
-	// 					"message": "File Exists."
-	// 				});
-	// 			}
-	// 		}
-	// 		else{
-	// 			res.json({
-	// 				"status":"204",
-	// 				"hash": filehash,
-	// 				"message": "File Doesn't Exists."
-	// 			});
-	// 		}
-	// 	});
-	// }
-	// catch(err){
-	// 	res.status(500).json({
-	// 		"status":"500",
-	// 		"hash": filehash,
-	// 		"message": "Try again later."
-	// 	});
-	// }
 });
 
 // -- encryption using ursa
