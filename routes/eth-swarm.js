@@ -229,23 +229,34 @@ router.post("/isAvailable", function(req, res, next) {
 
 	var url = 'http://localhost:8500/bzz-list:/'+filehash+'/';
 	
-	request(url, function(error, response, body) {
-		if (!error && response.statusCode == 200) {
-			var rawData = JSON.parse(body);
-			if(rawData.length != 0){
+	try{
+		request(url, function(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var rawData = JSON.parse(body);
+				if(rawData.length != 0){
+					res.json({
+						"status":"200 OK",
+						"hash": filehash,
+						"message": "File Exists."
+					});
+				}
+			}
+			else{
 				res.json({
-					"status":"200 OK",
+					"status":"204 No Content",
 					"hash": filehash,
-					"message": "File Exists."
+					"message": "File Doesn't Exists."
 				});
 			}
-		}
-	});
-	// res.json({
-	// 	"status":"200 OKK",
-	// 	"hash": filehash,
-	// 	"message": "File Exists."
-	// });
+		});
+	}
+	catch(err){
+		res.status(500).json({
+			"status":"500 INTERNAL SERVER ERROR",
+			"hash": filehash,
+			"message": "Try again later."
+		});
+	}
 });
 
 // -- encryption using ursa
