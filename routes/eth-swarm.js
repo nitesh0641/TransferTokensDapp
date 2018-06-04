@@ -241,6 +241,11 @@ router.post("/isAvailable", function(req, res, next) {
 			}
 		}
 	});
+	res.json({
+		"status":"200 OK",
+		"hash": filehash,
+		"message": "File Exists."
+	});
 });
 
 // -- encryption using ursa
