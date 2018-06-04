@@ -271,7 +271,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 			var result = request('http://localhost:8500/bzz-list:/'+fileRaw[i]+'/', function(error, response, body) {
 				if (!error && response.statusCode == 200) {
 					var rawData = JSON.parse(body);
-					if(rawData.length != 0){
+					if(rawData.length == 0){
 						return rawData;
 					}
 				}
