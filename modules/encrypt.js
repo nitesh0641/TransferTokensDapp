@@ -1,6 +1,6 @@
 module.exports = {
     requestUrl: function(request, url) {
-        request(url, function(error, body) {
+        request(url, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var rawData = JSON.parse(body);
                 if(rawData.length == 0){
