@@ -268,6 +268,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 	try{
 		for(i=0;i<fileRaw.length;i++)
 		{
+			console.log("hash => "+fileRaw[i])
 			request('http://localhost:8500/bzz-list:/'+fileRaw[i]+'/', function(error, response, body) {
 				if (!error && response.statusCode == 200) {
 					var rawData = JSON.parse(body);
