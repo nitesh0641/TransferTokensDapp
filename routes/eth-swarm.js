@@ -268,7 +268,6 @@ router.post("/isAvailable/batch", function(req, res, next) {
 	try{
 		for(i=0;i<fileRaw.length;i++)
 		{
-			console.log("hash => "+fileRaw[i])
 			var result = request('http://localhost:8500/bzz-list:/'+fileRaw[i]+'/', function(error, response, body) {
 				if (!error && response.statusCode == 200) {
 					var rawData = JSON.parse(body);
@@ -277,8 +276,9 @@ router.post("/isAvailable/batch", function(req, res, next) {
 					}
 				}
 			});
-			console.log(result.toString());
-
+			if(result.length > 0){
+				notFound.push(fileRaw[i]);
+			}
 		}
 	}
 	catch(err){
