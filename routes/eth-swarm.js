@@ -241,11 +241,11 @@ router.post("/isAvailable", function(req, res, next) {
 			}
 		}
 	});
-	res.json({
-		"status":"200 OKK",
-		"hash": filehash,
-		"message": "File Exists."
-	});
+	// res.json({
+	// 	"status":"200 OKK",
+	// 	"hash": filehash,
+	// 	"message": "File Exists."
+	// });
 });
 
 // -- encryption using ursa
