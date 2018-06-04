@@ -259,15 +259,23 @@ router.post("/isAvailable", function(req, res, next) {
 	}
 });
 
-function requestUrl(urlToCall, callback) {
+function requestUrl(urlToCall, file) {
     request(urlToCall, function (error, response, body) {                              
         if (!error && response.statusCode == 200) {
 			var rawData = JSON.parse(body);
 			if(rawData.length == 0){
-				return callback(rawData);
+				return returnHashes(rawData,file);
 			}
 		}
     });
+}
+
+function returnHashes(data,file){
+	console.log(data.length);
+	if(data.length != 0){
+		notFound.push(file);
+	}
+	console.log(notFound);
 }
 
 router.post("/isAvailable/batch", function(req, res, next) {
@@ -280,12 +288,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 		for(i=0;i<fileRaw.length;i++)
 		{
 			var urlToCall = 'http://localhost:8500/bzz-list:/'+fileRaw[i]+'/';
-			requestUrl(urlToCall, function(result){
-				console.log(result.length);
-				if(result.length != 0){
-					notFound.push(fileRaw[i]);
-				}
-			});
+			requestUrl(urlToCall, fileRaw[i]);
 		}
 	}
 	catch(err){
