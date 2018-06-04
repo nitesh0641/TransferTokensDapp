@@ -235,7 +235,7 @@ router.post("/isAvailable", function(req, res, next) {
 				var rawData = JSON.parse(body);
 				if(rawData.length != 0){
 					res.json({
-						"status":"200 OK",
+						"status":"200",
 						"hash": filehash,
 						"message": "File Exists."
 					});
@@ -243,7 +243,7 @@ router.post("/isAvailable", function(req, res, next) {
 			}
 			else{
 				res.json({
-					"status":"204 No Content",
+					"status":"204",
 					"hash": filehash,
 					"message": "File Doesn't Exists."
 				});
@@ -252,7 +252,7 @@ router.post("/isAvailable", function(req, res, next) {
 	}
 	catch(err){
 		res.status(500).json({
-			"status":"500 INTERNAL SERVER ERROR",
+			"status":"500",
 			"hash": filehash,
 			"message": "Try again later."
 		});
