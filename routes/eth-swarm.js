@@ -282,10 +282,11 @@ router.post("/isAvailable/batch", function(req, res, next) {
 		{
 			var url = 'http://localhost:8500/bzz-list:/'+fileRaw[i]+'/'
 			
-			getRequest(url).then(function (body) {
-				var rawData = JSON.parse(body);
+			getRequest(url).then(function (body1) {
+				var rawData = JSON.parse(body1);
 				if(rawData.length == 0){
 					notFound.push(fileRaw[i]);
+					console.log("notFound => "+notFound.toString());
 				}
 			});
 			// request(url, return function(error, response, body) {
@@ -302,7 +303,6 @@ router.post("/isAvailable/batch", function(req, res, next) {
 			// }
 		}
 
-		console.log(notFound.toString());
 		if(notFound.length != 0){
 			res.json({
 				"status":"200",
