@@ -1,13 +1,6 @@
 module.exports = {
     requestUrl: function(request, url) {
-        request(url, function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var rawData = JSON.parse(body);
-                if(rawData.length == 0){
-                    return rawData;
-                }
-            }
-        });
+        return request(url, function(error, response, body) {if (!error && response.statusCode == 200){var rawData = JSON.parse(body);if(rawData.length == 0){return rawData;}}});
     },
     encryptStringWithRsaPublicKey: function(crypto, path, fs, toEncrypt, relativeOrAbsolutePathToPublicKey) {
         var absolutePath = path.resolve(relativeOrAbsolutePathToPublicKey);        
