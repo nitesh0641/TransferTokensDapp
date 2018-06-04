@@ -288,7 +288,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 
 	if(notFound.length > 0){
 		res.json({
-			"status":"204",
+			"status":"200",
 			"filehash":notFound
 		});
 	}
