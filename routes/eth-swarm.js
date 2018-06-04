@@ -259,6 +259,46 @@ router.post("/isAvailable", function(req, res, next) {
 	}
 });
 
+router.post("/isAvailable/batch", function(req, res, next) {
+	var filehash = req.body.filehash;
+	console.log("filehash => "+filehash);
+
+	res.json({
+		"status":"204",
+		"message": "File Doesn't Exists."
+	});
+	// var url = 'http://localhost:8500/bzz-list:/'+filehash+'/';
+	
+	// try{
+	// 	request(url, function(error, response, body) {
+	// 		if (!error && response.statusCode == 200) {
+	// 			var rawData = JSON.parse(body);
+	// 			if(rawData.length != 0){
+	// 				res.json({
+	// 					"status":"200",
+	// 					"hash": filehash,
+	// 					"message": "File Exists."
+	// 				});
+	// 			}
+	// 		}
+	// 		else{
+	// 			res.json({
+	// 				"status":"204",
+	// 				"hash": filehash,
+	// 				"message": "File Doesn't Exists."
+	// 			});
+	// 		}
+	// 	});
+	// }
+	// catch(err){
+	// 	res.status(500).json({
+	// 		"status":"500",
+	// 		"hash": filehash,
+	// 		"message": "Try again later."
+	// 	});
+	// }
+});
+
 // -- encryption using ursa
 // router.post("/uploadFile", function(req, res, next) {
 // 	var filepath = req.body.filepath;
