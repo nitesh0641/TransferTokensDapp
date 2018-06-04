@@ -226,7 +226,7 @@ router.post("/removeOld", function(req, res, next) {
 
 router.post("/isAvailable", function(req, res, next) {
 	var filehash = req.body.filehash;
-
+	console.log("filehash => "+filehash);
 	var url = 'http://localhost:8500/bzz-list:/'+filehash+'/';
 	
 	try{
