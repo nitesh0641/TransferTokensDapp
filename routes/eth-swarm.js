@@ -261,7 +261,7 @@ router.post("/isAvailable", function(req, res, next) {
 
 router.post("/isAvailable/batch", function(req, res, next) {
 	var filehash = req.body.filehash;
-	console.log("filehash => "+filehash.split(','));
+	console.log("filehash => "+filehash.toString().split(','));
 
 	res.json({
 		"status":"204",
