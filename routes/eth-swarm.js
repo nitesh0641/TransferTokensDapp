@@ -232,7 +232,7 @@ router.post("/isAvailable", function(req, res, next) {
 	request(url, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var rawData = JSON.parse(body);
-			if(rawData.entries){
+			if(trim(rawData).length != 0){
 				res.json({
 					"status":"200 OK",
 					"hash": filehash,
@@ -242,7 +242,7 @@ router.post("/isAvailable", function(req, res, next) {
 		}
 	});
 	res.json({
-		"status":"200 OK",
+		"status":"200 OKK",
 		"hash": filehash,
 		"message": "File Exists."
 	});
