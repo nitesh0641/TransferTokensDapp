@@ -259,7 +259,7 @@ router.post("/isAvailable", function(req, res, next) {
 	}
 });
 
-function doCall(urlToCall) {
+function doRequestCall(urlToCall) {
   return co(function *(){
     var response = yield request(urlToCall, { wd: 'nodejs' }); // This is co-request.                             
     var statusCode = response.statusCode;
@@ -278,7 +278,7 @@ router.post("/isAvailable/batch", function(req, res, next) {
 	for(i=0;i<fileRaw.length;i++)
 	{
 		var url = 'http://localhost:8500/bzz-list:/'+fileRaw[i]+'/';
-		var response = yield doCall(url);
+		var response = doRequestCall(url);
 		console.log(response);
 		// var result = encrypt.requestUrl(request, url);
 		// console.log(result.length);
