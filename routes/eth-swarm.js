@@ -259,53 +259,50 @@ router.post("/isAvailable", function(req, res, next) {
 	}
 });
 
-function doRequestCall(urlToCall) {
-  return co(function *(){
-    var response = yield request(urlToCall, { wd: 'nodejs' }); // This is co-request.                             
-    var statusCode = response.statusCode;
-    finalData = getResponseJson(statusCode, data.toString());
-    return finalData;
-  });
-}
-
 router.post("/isAvailable/batch", function(req, res, next) {
 	var filehash = req.body.filehash;
 	var fileRaw = filehash.toString().split(',');
 	var notFound = [];
 	// console.log("filehash => "+fileRaw[0]+" array length => "+fileRaw.length);
 
-	// try{
-	for(i=0;i<fileRaw.length;i++)
-	{
-		var url = 'http://localhost:8500/bzz-list:/'+fileRaw[i]+'/';
-		var response = doRequestCall(url);
-		console.log(response);
-		// var result = encrypt.requestUrl(request, url);
-		// console.log(result.length);
-		// if(result.length != 0){
-		// 	notFound.push(fileRaw[i]);
-		// }
-	}
+	try{
+		for(i=0;i<fileRaw.length;i++)
+		{
+			var url = 'http://localhost:8500/bzz-list:/'+fileRaw[i]+'/'
+			
+			var result = request(url, return function(error, response, body) {
+				if (!error && response.statusCode == 200) {
+					var rawData = JSON.parse(body);
+					if(rawData.length == 0){
+						return rawData;
+					}
+				}
+			});
+			console.log(result.length);
+			if(result.length != 0){
+				notFound.push(fileRaw[i]);
+			}
+		}
 
-	if(notFound.length != 0){
-		res.json({
-			"status":"200",
-			"filehash":notFound
-		});
+		if(notFound.length != 0){
+			res.json({
+				"status":"200",
+				"filehash":notFound
+			});
+		}
+		else{
+			res.json({
+				"status":"204",
+				"message": "Records not found."
+			});
+		}
 	}
-	else{
-		res.json({
-			"status":"204",
-			"message": "Records not found."
+	catch(err){
+		res.status(500).json({
+			"status":"500",
+			"message": "Try again later."
 		});
-	}
-	// }
-	// catch(err){
-	// 	res.status(500).json({
-	// 		"status":"500",
-	// 		"message": "Try again later."
-	// 	});
-	// }	
+	}	
 });
 
 // -- encryption using ursa
